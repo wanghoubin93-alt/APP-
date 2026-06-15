@@ -1,0 +1,22 @@
+<!-- @dsCard group="Spacing" viewport="700x170" name="细线 + 直角 · Hairline & Square" subtitle="统一 1px --rule 细线 · 全直角 · 唯一例外 terra 圆点" -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="card.css">
+<style>
+  body{flex-direction:column; align-items:stretch; justify-content:center; gap:18px}
+  .hr{border:0; border-top:1px solid var(--rule); margin:0}
+  .frame{height:46px; border:1px solid var(--ink); display:flex; align-items:center; padding:0 16px;
+    font-family:var(--font-en); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3)}
+  .legend{display:flex; align-items:center; gap:10px; font-family:var(--font-en); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3)}
+  .dot{width:12px; height:12px; border-radius:50%; background:var(--terra)}
+</style>
+</head>
+<body>
+  <hr class="hr">
+  <div class="frame">border-radius : 0 — 直角卡片 / 图片 / 容器</div>
+  <div class="legend"><span class="dot"></span> 唯一圆形例外 · 平面图 terra 定位圆点</div>
+</body>
+</html>

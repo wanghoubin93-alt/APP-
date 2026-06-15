@@ -1,0 +1,19 @@
+/* 共用规范卡样式 — 每张 @dsCard 在此基础上加局部样式 */
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-cn);
+  letter-spacing:var(--tracking-cn);
+  -webkit-font-smoothing:antialiased;
+  padding:22px 28px;
+  display:flex; align-items:center;
+}
+.row{display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap; width:100%}
+.sw{display:flex; flex-direction:column; gap:9px}
+.sw .chip{width:92px; height:56px; border:1px solid var(--rule)}
+.sw .nm{font-family:var(--font-en); font-weight:600; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink)}
+.sw .hex{font-family:var(--font-en); font-size:11px; color:var(--ink-3); letter-spacing:.04em}
+.eyebrow{font-family:var(--font-en); font-weight:600; font-size:12px; letter-spacing:var(--tracking-x); text-transform:uppercase; color:var(--ink-3)}
+.en{font-family:var(--font-en)}

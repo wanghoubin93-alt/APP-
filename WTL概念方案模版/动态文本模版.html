@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>动态文本模版 · Dynamic Brief Template</title>
+
+<!--
+  ══════════════════════════════════════════════════════════════════════
+  动态汇报模版 (Dynamic Brief Template)
+  ──────────────────────────────────────────────────────────────────────
+  这是一个「电影化叙事」式的汇报骨架，不是翻页 PPT。
+  内容由底部 <script id="scenesData"> 里的 scenes[] 数组驱动。
+
+  ◆ 怎么换内容
+    1. 在页面里点右下角「✎ 编辑」→ 直接双击文字就能改；改完点
+       「⬇ 导出 HTML」会下载一份新的、内容已写死的 HTML。
+    2. 或者手动改：每一「幕」= scenes[] 里的一个对象 + 一个 .overlay 叠层。
+       - 改字幕：scene 的 zh / en
+       - 改时长：scene 的 dur（毫秒）
+       - 加一幕：复制一个 <section class="overlay" id="ov-xxx"> 叠层，
+         再在 scenes[] 里加 {ov:'ov-xxx', name:'幕名', dur:7000, zh:'…', en:'…'}
+
+  ◆ 单幕可选字段
+    ov   叠层 id（必填）      name 进度条幕名      dur 自动播放停留毫秒
+    zh   中文字幕            en   英文小字字幕
+    info 右下信息卡 {t:标题, e:英文, li:[条目…], star:'★ 特别项'}
+    ph   true = 显示「效果图占位」标记（提示该背景图待替换）
+
+  ◆ 换主题色：改 :root 顶部的 --terra / --moss 等 WTL 品牌 token 即可。
+  ◆ 换背景图：编辑模式下点任意背景 / 图片，会弹出选图框。
+  ◆ 字体：拉丁/数字走随包 Bahnschrift（../fonts/），中文走系统雅黑/苹方 fallback。
+  ══════════════════════════════════════════════════════════════════════
+-->
+
+<style>
+:root{
+  /* —— WTL 品牌 token（与 colors_and_type.css 同源 · 改色只改这一组）—— */
+  --ink:#111111;        /* 浅底正文 / 细线 */
+  --terra:#b96f3c;      /* 主强调色 — 章节数字、圆点、强调线 */
+  --moss:#6b7a5a;       /* 次强调色 — 景观 / 植栽 */
+  --gold:#b89968;       /* 金属细节 accent */
+  --paper:#f5f2ec;      /* 暖纸浅底 */
+  --black:#0a0a0a;      /* 深色版面 / 舞台底 */
+
+  /* —— 引擎内部别名（指向上面的品牌色）—— */
+  --accent:var(--terra);
+  --accent2:var(--moss);
+  --warm:var(--paper);
+  --dark:var(--black);
+  --stage:var(--black);
+  --line-l:rgba(17,17,17,.14);   /* 浅底分割线 */
+  --line-d:rgba(255,255,255,.16);/* 深底分割线 */
+  --cn:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Noto Sans SC",system-ui,sans-serif;
+  --en:"Bahnschrift","DIN Alternate","Oswald","Barlow Condensed","Helvetica Neue",Arial,sans-serif;
+}
+@font-face{
+  font-family:"Bahnschrift";
+  font-weight:300 700; font-stretch:75% 100%; font-style:normal; font-display:swap;
+  src:url("fonts/Bahnschrift.ttf") format("truetype-variations"),
+      url("fonts/Bahnschrift.ttf") format("truetype");
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--stage);
+  font-family:var(--cn);
+  color:var(--ink);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ══════════ 叠层（每一幕一张）══════════ */
+.overlay{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:flex-start;
+  /* 上下留出 HUD 安全区：内容居中时自动上移，避免压到底部字幕条 */
+  padding:clamp(48px,8vh,96px) 0 clamp(150px,18vh,200px);
+  opacity:0; pointer-events:none;
+  transition:opacity .5s cubic-bezier(.2,0,0,1);
+  z-index:1;
+}
+.overlay.on{opacity:1; pointer-events:auto; z-index:2}
+.overlay.light{background:var(--warm); color:var(--ink)}
+.overlay.dark{background:var(--dark); color:#fff}
+.ovin{
+  position:relative; z-index:3;
+  width:min(1180px,84vw);
+  margin:0 auto; padding:0 clamp(40px,6vw,120px);
+}
+/* 带信息卡的空间幕：文字列左锚定并收窄，给右侧信息卡让位 */
+.overlay.has-info .ovin, #ov-space .ovin{
+  margin:0; width:auto; max-width:min(620px,48vw);
+  padding-left:clamp(40px,7vw,120px); padding-right:24px;
+}
+
+/* —— 背景图 + 遮罩（封面 / 空间幕用）—— */
+.bgpic{
+  position:absolute; inset:0; z-index:0;
+  background-size:cover; background-position:center;
+  background-color:#15110c;
+  transform:scale(1.02);
+}
+/* WTL：不做 Ken-Burns 缩放，切换只用淡入（fade only）*/
+.bgveil{
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(100deg,rgba(10,10,10,.80) 0%,rgba(10,10,10,.46) 52%,rgba(10,10,10,.12) 100%);
+}
+.bgpic:empty::after,.bgpic.placeholder::after{
+  content:"背景图占位"; position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--en); letter-spacing:.3em; font-size:13px;
+  color:rgba(255,255,255,.28);
+}
+
+/* ══════════ 文字排版 ══════════ */
+.eyebrow{
+  font-family:var(--en); font-weight:600;
+  font-size:clamp(12px,1.1vw,15px); letter-spacing:.34em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:26px; display:flex; align-items:center; gap:14px;
+}
+.eyebrow::before{content:""; width:34px; height:1px; background:currentColor; opacity:.7}
+.big{
+  font-size:clamp(38px,6.4vw,92px); line-height:1.02; font-weight:300;
+  letter-spacing:.01em;
+}
+.big b{font-weight:700}
+.mid{
+  font-size:clamp(28px,4.2vw,56px); line-height:1.1; font-weight:300; letter-spacing:.01em;
+}
+.mid b{font-weight:700}
+.sub2{
+  margin-top:26px; font-family:var(--en); font-weight:500;
+  font-size:clamp(13px,1.5vw,20px); letter-spacing:.16em; color:var(--accent2);
+  text-transform:uppercase;
+}
+.meta{
+  margin-top:22px; max-width:46em; line-height:1.85;
+  font-size:clamp(13px,1.15vw,17px); color:inherit; opacity:.78;
+}
+
+/* 大编号（章节分隔用） */
+.chapno{
+  font-family:var(--en); font-weight:700; line-height:.8;
+  font-size:clamp(90px,17vw,260px); color:var(--accent);
+  opacity:.16; letter-spacing:-.02em; margin-bottom:18px;
+}
+
+/* —— 三栏卡片 —— */
+.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin-top:42px}
+.card{padding:30px 30px 30px 0; border-top:1px solid var(--line-l)}
+.overlay.dark .card{border-top-color:var(--line-d)}
+.card h3{font-size:clamp(17px,1.5vw,22px); font-weight:700; margin-bottom:12px}
+.card p{font-size:clamp(12px,1vw,15px); line-height:1.75; opacity:.78}
+.card.acc h3{color:var(--accent)}
+.card.acc{border-top-color:var(--accent)}
+
+/* —— 数字统计 —— */
+.stats{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:48px}
+.stat .num{
+  font-family:var(--en); font-weight:700; line-height:1;
+  font-size:clamp(40px,5.5vw,78px); color:var(--accent);
+}
+.stat .num em{font-style:normal; font-size:.42em; margin-left:.06em; color:var(--accent2)}
+.stat .lbl{margin-top:14px; font-size:clamp(12px,1vw,15px); opacity:.78; line-height:1.5}
+
+/* —— 时间轴 —— */
+.tl{display:flex; gap:0; margin-top:54px; position:relative; width:min(960px,80vw)}
+.tl::before{content:""; position:absolute; top:6px; left:3%; right:3%; height:1px;
+  background:var(--line-l)}
+.overlay.dark .tl::before{background:var(--line-d)}
+.tlnode{flex:1; position:relative; padding-top:30px; padding-right:18px}
+.tlnode::before{content:""; position:absolute; top:1px; left:0; width:11px; height:11px;
+  border-radius:50%; background:var(--accent)}
+.tlnode .y{font-family:var(--en); font-weight:700; font-size:clamp(16px,1.6vw,24px);
+  letter-spacing:.04em; margin-bottom:8px}
+.tlnode .t{font-size:clamp(11px,.95vw,14px); line-height:1.6; opacity:.78}
+
+/* —— 目录 —— */
+.toc{margin-top:40px; display:flex; flex-direction:column; gap:0}
+.tocrow{display:flex; align-items:baseline; gap:28px; padding:24px 0;
+  border-top:1px solid var(--line-l)}
+.tocrow:last-child{border-bottom:1px solid var(--line-l)}
+.tocrow .n{font-family:var(--en); font-weight:700; font-size:clamp(22px,2.4vw,38px);
+  color:var(--accent); min-width:2.4em}
+.tocrow .h{font-size:clamp(19px,2vw,30px); font-weight:300}
+.tocrow .e{margin-left:auto; font-family:var(--en); letter-spacing:.2em; font-size:12px;
+  text-transform:uppercase; opacity:.5}
+
+/* —— 入场动画 —— */
+.overlay .rise{opacity:0; transform:translateY(16px)}
+.overlay.on .rise{animation:rise .8s cubic-bezier(.2,0,0,1) forwards}
+.overlay.on .rise:nth-child(2){animation-delay:.08s}
+.overlay.on .rise:nth-child(3){animation-delay:.16s}
+.overlay.on .rise:nth-child(4){animation-delay:.24s}
+.overlay.on .rise:nth-child(5){animation-delay:.32s}
+@keyframes rise{to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .overlay .rise{opacity:1; transform:none; animation:none!important}
+  .overlay.on .bgpic{animation:none}
+}
+
+/* ══════════ HUD（常驻界面）══════════ */
+#hudlogo{
+  position:fixed; top:30px; left:48px; z-index:30;
+  display:flex; align-items:center;
+}
+#hudlogo img{height:26px; width:auto; display:block; filter:brightness(0) invert(1); opacity:.92}
+/* 浅色版面时用 logo 原色（深色） */
+body.on-light #hudlogo img{filter:none; opacity:.8}
+
+#phtag{
+  position:fixed; top:36px; right:48px; z-index:30;
+  font-family:var(--en); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:#fff; background:var(--accent); padding:6px 12px;
+  opacity:0; transition:opacity .3s;
+}
+#phtag.on{opacity:.92}
+
+#subtitle{
+  position:fixed; left:50%; bottom:92px; transform:translateX(-50%);
+  z-index:30; text-align:center; width:min(1100px,86vw);
+  pointer-events:none;
+}
+#subtitle .zh{
+  font-size:clamp(17px,1.7vw,25px); font-weight:400; color:#fff;
+  text-shadow:0 2px 14px rgba(0,0,0,.55); line-height:1.5;
+}
+#subtitle .en{
+  margin-top:8px; font-family:var(--en); font-size:11px; letter-spacing:.28em;
+  text-transform:uppercase; color:rgba(255,255,255,.62);
+}
+#subtitle.flip .zh{animation:subflip .5s cubic-bezier(.2,0,0,1)}
+@keyframes subflip{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
+
+#scname{
+  position:fixed; left:48px; bottom:42px; z-index:30;
+  font-family:var(--en); font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+  color:#fff; mix-blend-mode:difference;
+}
+
+#dots{position:fixed; left:50%; bottom:40px; transform:translateX(-50%);
+  z-index:30; display:flex; gap:9px}
+#dots .dot{width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.35);
+  cursor:pointer; transition:all .25s; mix-blend-mode:difference}
+#dots .dot:hover{opacity:.7}
+#dots .dot.on{background:#fff; transform:scale(1.35)}
+
+/* 右下信息卡 */
+#infocard{
+  position:fixed; right:clamp(24px,3.5vw,56px); top:50%; transform:translateY(-50%);
+  z-index:30; width:min(300px,30vw);
+  background:rgba(10,10,10,.84); color:#fff; padding:24px 26px;
+  border-left:2px solid var(--accent);
+  opacity:0; pointer-events:none; transition:opacity .45s cubic-bezier(.2,0,0,1);
+}
+#infocard.on{opacity:1}
+#infocard h3{font-size:18px; font-weight:700; margin-bottom:4px}
+#infocard .en{font-family:var(--en); font-size:10px; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--accent2); margin-bottom:14px}
+#infocard ul{list-style:none; display:flex; flex-direction:column; gap:9px}
+#infocard li{font-size:13px; line-height:1.55; opacity:.86; padding-left:14px; position:relative}
+#infocard li::before{content:"·"; position:absolute; left:0; color:var(--accent)}
+#infocard li.star{color:var(--accent2); opacity:1; font-weight:600}
+#infocard li.star::before{content:"★"; font-size:9px; top:3px}
+
+/* ══════════ 控制条 ══════════ */
+#ctrl{
+  position:fixed; right:40px; bottom:40px; z-index:40;
+  display:flex; gap:8px;
+}
+#ctrl button{
+  font-family:var(--cn); font-size:13px; color:#fff;
+  background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.22);
+  padding:9px 15px; cursor:pointer; backdrop-filter:blur(4px);
+  transition:opacity .12s;
+}
+#ctrl button:hover{opacity:.65}
+#ctrl button:active{opacity:.45}
+
+/* ══════════ 编辑模式 ══════════ */
+#editbar{
+  position:fixed; left:50%; top:18px; transform:translateX(-50%); z-index:45;
+  display:none; gap:14px; align-items:center;
+  background:var(--ink); color:#fff; padding:8px 18px;
+  font-size:12px; letter-spacing:.06em;
+}
+body.editing #editbar{display:flex}
+body.editing [contenteditable]{outline:1px dashed var(--accent); outline-offset:3px;
+  cursor:text; min-width:1em}
+body.editing [contenteditable]:hover{background:rgba(185,111,60,.14)}
+body.editing .bgpic,body.editing .ovin img{cursor:copy}
+body.editing #subtitle{pointer-events:auto}
+body.editing #subtitle .zh,body.editing #subtitle .en{pointer-events:auto}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ 幕 / OVERLAYS ═══════════════ -->
+
+<!-- 01 · 封面（深底 + 背景图 + 占位标记） -->
+<section class="overlay dark" id="ov-cover" data-screen-label="封面">
+  <div class="bgpic placeholder"></div>
+  <div class="bgveil"></div>
+  <div class="ovin">
+    <div class="eyebrow rise">CONFIDENTIAL · 提案专用</div>
+    <h1 class="big rise"><b>项目标题</b><br>一句话主张</h1>
+    <div class="sub2 rise">PROJECT TITLE · SUBTITLE IN ENGLISH</div>
+    <div class="meta rise">在此填写项目的一句话定位 / 地点 / 面积 / 时间等基本信息。</div>
+  </div>
+</section>
+
+<!-- 02 · 目录 / 章节导览（浅底） -->
+<section class="overlay light" id="ov-toc" data-screen-label="目录">
+  <div class="ovin">
+    <div class="eyebrow rise">CONTENTS · 目录</div>
+    <h1 class="mid rise">三个章节，一条动线</h1>
+    <div class="toc rise">
+      <div class="tocrow"><span class="n">01</span><span class="h">章节标题一</span><span class="e">Chapter One</span></div>
+      <div class="tocrow"><span class="n">02</span><span class="h">章节标题二</span><span class="e">Chapter Two</span></div>
+      <div class="tocrow"><span class="n">03</span><span class="h">章节标题三</span><span class="e">Chapter Three</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · 章节分隔页（深底 + 大编号） -->
+<section class="overlay dark" id="ov-div1" data-screen-label="章节01">
+  <div class="ovin">
+    <div class="chapno rise">01</div>
+    <div class="eyebrow rise">CHAPTER ONE</div>
+    <h1 class="big rise">章节<b>标题</b></h1>
+    <div class="meta rise">章节导语：用一句话点明本章要讲什么。</div>
+  </div>
+</section>
+
+<!-- 04 · 三栏观点（浅底卡片） -->
+<section class="overlay light" id="ov-view" data-screen-label="观点">
+  <div class="ovin">
+    <div class="eyebrow rise">OUR APPROACH · 设计主张</div>
+    <h1 class="mid rise">三条核心观点</h1>
+    <div class="cards rise">
+      <div class="card"><h3>观点一</h3><p>在这里写一段简短说明，描述这条观点的核心内容与价值。</p></div>
+      <div class="card"><h3>观点二</h3><p>在这里写一段简短说明，描述这条观点的核心内容与价值。</p></div>
+      <div class="card acc"><h3>我们的答案</h3><p>用强调卡承载最关键的一条主张，让结论醒目。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · 数字统计（深底 · 滚动数字） -->
+<section class="overlay dark" id="ov-stat" data-screen-label="数字">
+  <div class="ovin">
+    <div class="eyebrow rise">BY THE NUMBERS · 关键数字</div>
+    <h1 class="mid rise">用数字说话</h1>
+    <div class="stats rise">
+      <div class="stat"><div class="num" data-count="30"><em>年</em></div><div class="lbl">指标说明一</div></div>
+      <div class="stat"><div class="num" data-count="80"><em>+</em></div><div class="lbl">指标说明二</div></div>
+      <div class="stat"><div class="num" data-count="13"><em>国</em></div><div class="lbl">指标说明三</div></div>
+      <div class="stat"><div class="num" data-count="100"><em>%</em></div><div class="lbl">指标说明四</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · 时间轴 / 历程（浅底） -->
+<section class="overlay light" id="ov-timeline" data-screen-label="时间轴">
+  <div class="ovin">
+    <div class="eyebrow rise">TIMELINE · 发展历程</div>
+    <h1 class="mid rise">一条时间线</h1>
+    <div class="tl rise">
+      <div class="tlnode"><div class="y">阶段一</div><div class="t">该阶段的一句话说明。</div></div>
+      <div class="tlnode"><div class="y">阶段二</div><div class="t">该阶段的一句话说明。</div></div>
+      <div class="tlnode"><div class="y">阶段三</div><div class="t">该阶段的一句话说明。</div></div>
+      <div class="tlnode"><div class="y">阶段四</div><div class="t">该阶段的一句话说明。</div></div>
+      <div class="tlnode"><div class="y">阶段五</div><div class="t">该阶段的一句话说明。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · 空间介绍（深底 + 背景图 + 右下信息卡） -->
+<section class="overlay dark" id="ov-space" data-screen-label="空间">
+  <div class="bgpic placeholder"></div>
+  <div class="bgveil"></div>
+  <div class="ovin">
+    <div class="eyebrow rise">导览第一站 · 区域名</div>
+    <h1 class="mid rise">空间标题 · Space Name</h1>
+    <div class="meta rise">用两三行文字描述这处空间的体验意图与设计要点。<br>信息卡里放参数与要点清单。</div>
+  </div>
+</section>
+
+<!-- 08 · 结尾（深底 + 背景图） -->
+<section class="overlay dark" id="ov-end" data-screen-label="结尾">
+  <div class="bgpic placeholder"></div>
+  <div class="bgveil"></div>
+  <div class="ovin">
+    <div class="eyebrow rise">THANK YOU</div>
+    <h1 class="big rise">收束<b>主张</b></h1>
+    <div class="sub2 rise">CLOSING STATEMENT IN ENGLISH</div>
+    <div class="meta rise">用一句话收尾——把提案落到一个值得记住的结论上。</div>
+  </div>
+</section>
+
+<!-- ═══════════════ HUD ═══════════════ -->
+<div id="hudlogo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPEAAAAmCAYAAAAV8H2eAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFJGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNi4wLWMwMDIgNzkuMTY0MzYwLCAyMDIwLzAyLzEzLTAxOjA3OjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgMjEuMSAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIwLTAzLTIzVDIwOjExOjExKzA4OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wMi0yMlQxNzoxNDo0MiswODowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wMi0yMlQxNzoxNDo0MiswODowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3ZjM1ZDc5My0zMzY3LTQ1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" alt="WTL · Way To Life Design"></div>
+<div id="phtag">效果图占位 · 待替换</div>
+
+<div id="infocard"><h3></h3><div class="en"></div><ul></ul></div>
+
+<div id="subtitle"><div class="zh"></div><div class="en"></div></div>
+<div id="scname"></div>
+<div id="dots"></div>
+
+<!-- ═══════════════ 控制条 ═══════════════ -->
+<div id="ctrl">
+  <button id="btnEdit">✎ 编辑</button>
+  <button id="btnPrev">‹ 上一幕</button>
+  <button id="btnPlay">▶ 自动播放</button>
+  <button id="btnNext">下一幕 ›</button>
+  <button id="btnSave">⬇ 导出 HTML</button>
+</div>
+<div id="editbar">
+  <span>编辑模式：双击文字直接改 · 点背景图换图 · 完成后导出</span>
+</div>
+<input type="file" id="imgpick" accept="image/*" hidden>
+
+<!-- ═══════════════ 场景数据 ═══════════════ -->
+<script id="scenesData">
+const scenes=[
+ {ov:'ov-cover', name:'封面', dur:6500, ph:true,
+  zh:'在此填写开场旁白——一句话讲清项目是什么。', en:'PROJECT TITLE'},
+ {ov:'ov-toc', name:'目录', dur:7000,
+  zh:'三个章节，一条动线走完。', en:'CONTENTS'},
+ {ov:'ov-div1', name:'章节 01', dur:5500,
+  zh:'进入第一章——在这里点题。', en:'CHAPTER ONE'},
+ {ov:'ov-view', name:'设计主张', dur:8000,
+  zh:'三条核心观点，支撑整个方案的立意。', en:'OUR APPROACH'},
+ {ov:'ov-stat', name:'关键数字', dur:7500,
+  zh:'用四个关键数字，建立基本的体感与信任。', en:'BY THE NUMBERS'},
+ {ov:'ov-timeline', name:'发展历程', dur:7500,
+  zh:'一条时间线，串起项目或团队的关键节点。', en:'TIMELINE'},
+ {ov:'ov-space', name:'空间介绍', dur:8000, ph:true,
+  zh:'介绍第一处空间的体验意图与设计要点。', en:'FIRST SPACE',
+  info:{t:'空间名称', e:'SPACE NAME', li:['面积 / 参数一','形式 / 参数二','利旧 / 设备说明'], star:'★ 亮点展项'}},
+ {ov:'ov-end', name:'结尾', dur:7000, ph:true,
+  zh:'收尾旁白——落到一个值得记住的结论。', en:'SEE YOU IN THE REAL HALL'}
+];
+</script>
+
+<!-- ═══════════════ 引擎 ═══════════════ -->
+<script>
+let cur=0, playing=false, timer=null, editing=false, imgTarget=null;
+const counted=new Set();
+const $=q=>document.querySelector(q);
+const subtitle=$('#subtitle'), info=$('#infocard'), phtag=$('#phtag'), dots=$('#dots');
+
+/* 进度圆点 */
+scenes.forEach((s,i)=>{
+  const d=document.createElement('div'); d.className='dot'; d.title=s.name;
+  d.onclick=()=>go(i); dots.appendChild(d);
+});
+
+/* 数字滚动 */
+function countUp(ov){
+  if(counted.has(ov))return; counted.add(ov);
+  document.querySelectorAll('#'+ov+' [data-count]').forEach(el=>{
+    const target=+el.dataset.count, em=el.querySelector('em');
+    const suffix=em?em.outerHTML:'', t0=performance.now(), dur=1500;
+    function step(t){
+      const p=Math.min(1,(t-t0)/dur);
+      el.innerHTML=Math.round(target*(1-Math.pow(1-p,3)))+suffix;
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+/* 右下信息卡 */
+function setInfo(s){
+  if(s.info){
+    info.querySelector('h3').textContent=s.info.t||'';
+    info.querySelector('.en').textContent=s.info.e||'';
+    const ul=info.querySelector('ul'); ul.innerHTML='';
+    (s.info.li||[]).forEach(t=>{const li=document.createElement('li');li.textContent=t;ul.appendChild(li);});
+    if(s.info.star){const li=document.createElement('li');li.className='star';li.textContent=s.info.star;ul.appendChild(li);}
+    info.classList.remove('on'); void info.offsetWidth; info.classList.add('on');
+  } else info.classList.remove('on');
+}
+
+/* 切换到第 i 幕 */
+function go(i){
+  cur=(i+scenes.length)%scenes.length;
+  const s=scenes[cur];
+  document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('on'));
+  const ov=$('#'+s.ov);
+  if(ov){
+    ov.classList.add('on');
+    ov.classList.toggle('has-info', !!s.info); /* 有信息卡时收窄文字列 */
+    document.body.classList.toggle('on-light', ov.classList.contains('light')); /* 浅色幕 logo 用原色 */
+    /* 重放入场动画 */
+    ov.querySelectorAll('.rise').forEach(r=>{r.style.animation='none'; void r.offsetWidth; r.style.animation='';});
+    const bg=ov.querySelector('.bgpic'); if(bg){bg.style.animation='none'; void bg.offsetWidth; bg.style.animation='';}
+  }
+  $('#scname').textContent=s.name||'';
+  subtitle.classList.remove('flip'); void subtitle.offsetWidth; subtitle.classList.add('flip');
+  subtitle.querySelector('.zh').textContent=s.zh||'';
+  subtitle.querySelector('.en').textContent=s.en||'';
+  document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('on',j===cur));
+  phtag.classList.toggle('on', !!s.ph);
+  setInfo(s);
+  if(s.ov) countUp(s.ov);
+  if(playing){clearTimeout(timer); timer=setTimeout(()=>go(cur+1), s.dur||7000);}
+}
+
+/* 自动播放 */
+function setPlay(p){
+  playing=p;
+  $('#btnPlay').textContent=p?'❚❚ 暂停':'▶ 自动播放';
+  clearTimeout(timer);
+  if(p) timer=setTimeout(()=>go(cur+1), scenes[cur].dur||7000);
+}
+
+$('#btnNext').onclick=()=>go(cur+1);
+$('#btnPrev').onclick=()=>go(cur-1);
+$('#btnPlay').onclick=()=>setPlay(!playing);
+document.addEventListener('keydown',e=>{
+  if(e.target.isContentEditable)return;
+  if(e.key==='ArrowRight')go(cur+1);
+  else if(e.key==='ArrowLeft')go(cur-1);
+  else if(e.key===' '){e.preventDefault(); setPlay(!playing);}
+});
+/* 双击全屏 */
+document.addEventListener('dblclick',e=>{
+  if(editing)return;
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
+  else document.exitFullscreen&&document.exitFullscreen();
+});
+
+/* ── 编辑模式 ── */
+const EDITSEL='.eyebrow,.big,.mid,.sub2,.meta,.chapno,.card h3,.card p,'+
+  '.stat .num,.stat .lbl,.tl .y,.tl .t,.tocrow .h,.tocrow .e,'+
+  '#infocard h3,#infocard .en,#infocard li';
+function toggleEdit(){
+  editing=!editing;
+  document.body.classList.toggle('editing',editing);
+  if(editing) setPlay(false);
+  document.querySelectorAll(EDITSEL).forEach(el=>el.contentEditable=editing?'true':'false');
+  subtitle.querySelectorAll('.zh,.en').forEach(el=>el.contentEditable=editing?'true':'false');
+  $('#btnEdit').textContent=editing?'✓ 完成编辑':'✎ 编辑';
+}
+$('#btnEdit').onclick=toggleEdit;
+
+/* 字幕改动写回 scenes */
+subtitle.addEventListener('input',()=>{
+  scenes[cur].zh=subtitle.querySelector('.zh').textContent;
+  scenes[cur].en=subtitle.querySelector('.en').textContent;
+});
+
+/* 点背景 / 图片换图 */
+document.addEventListener('click',e=>{
+  if(!editing)return;
+  const t=e.target.closest('.bgpic, .ovin img');
+  if(t){imgTarget=t; $('#imgpick').click();}
+});
+$('#imgpick').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f||!imgTarget){e.target.value='';return;}
+  const r=new FileReader();
+  r.onload=()=>{
+    if(imgTarget.classList.contains('bgpic')){
+      imgTarget.style.backgroundImage='url('+r.result+')';
+      imgTarget.classList.remove('placeholder');
+    } else imgTarget.src=r.result;
+    imgTarget=null;
+  };
+  r.readAsDataURL(f); e.target.value='';
+});
+
+/* 一键导出当前内容为新 HTML */
+$('#btnSave').onclick=()=>{
+  const clone=document.documentElement.cloneNode(true);
+  const sd=clone.querySelector('#scenesData');
+  sd.removeAttribute('src');
+  sd.textContent='const scenes='+JSON.stringify(scenes,null,1)+';';
+  clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+  clone.querySelector('body').classList.remove('editing');
+  const html='<!DOCTYPE html>'+clone.outerHTML;
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='动态汇报_'+new Date().toISOString().slice(0,10)+'.html'; a.click();
+};
+
+go(0);
+</script>
+</body>
+</html>

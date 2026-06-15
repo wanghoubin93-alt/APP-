@@ -1,0 +1,222 @@
+/* ============================================================
+   WTL Concept Design System — colors & type
+   Use for any concept-stage proposal deck or design artifact.
+   ============================================================ */
+
+/* ---------- Webfonts ------------------------------------------------ */
+/* 中文走系统 fallback (微软雅黑 / PingFang SC / 思源黑体 …)
+   Bahnschrift (variable, condensed-geometric) 随包用于拉丁与数字.
+   如需绝对一致的中文呈现, 把 MSYH.TTC / MSYHL.TTC / MSYHBD.TTC
+   放回 fonts/ 目录, 并取消下方注释. */
+
+/*
+@font-face {
+  font-family: "YaHei";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/MSYHL.TTC") format("truetype-collection"),
+       url("fonts/MSYHL.TTC") format("truetype");
+}
+@font-face {
+  font-family: "YaHei";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/MSYH.TTC") format("truetype-collection"),
+       url("fonts/MSYH.TTC") format("truetype");
+}
+@font-face {
+  font-family: "YaHei";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/MSYHBD.TTC") format("truetype-collection"),
+       url("fonts/MSYHBD.TTC") format("truetype");
+}
+*/
+@font-face {
+  font-family: "Bahnschrift";
+  font-weight: 300 700;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/Bahnschrift.ttf") format("truetype-variations"),
+       url("fonts/Bahnschrift.ttf") format("truetype");
+}
+
+/* ---------- Tokens ------------------------------------------------- */
+:root {
+  /* ---- Brand neutrals ---- */
+  --ink:        #111111;   /* primary text, hairlines on light */
+  --ink-2:      #2a2a2a;   /* secondary text */
+  --ink-3:      #6b6b6b;   /* tertiary, captions */
+  --ink-4:      #a8a8a8;   /* disabled, page-number gray */
+  --rule:       #d8d4cc;   /* hairline / divider on cream */
+  --rule-dark:  #2a2a2a;   /* hairline on dark */
+
+  --paper:      #f5f2ec;   /* primary surface — warm cream */
+  --paper-2:    #ebe7df;   /* secondary surface */
+  --paper-3:    #ddd7c9;   /* tertiary surface */
+  --white:      #ffffff;
+  --black:      #0a0a0a;   /* full-bleed cover, image overlay */
+
+  /* ---- Brand accent ---- */
+  --terra:      #b96f3c;   /* warm earth — primary accent */
+  --terra-soft: #d9a37b;
+  --moss:       #6b7a5a;   /* secondary accent (planting/landscape) */
+  --gold:       #b89968;   /* metallic detail accent */
+
+  /* ---- Semantic ---- */
+  --bg:           var(--paper);
+  --bg-elevated:  var(--white);
+  --bg-inverse:   var(--black);
+  --fg:           var(--ink);
+  --fg-2:         var(--ink-2);
+  --fg-muted:     var(--ink-3);
+  --fg-faint:     var(--ink-4);
+  --fg-inverse:   var(--paper);
+  --accent:       var(--terra);
+  --hairline:     var(--rule);
+
+  /* ---- Type stacks ---- */
+  --font-cn:     "YaHei", "Microsoft YaHei", "PingFang SC",
+                 "Hiragino Sans GB", "Source Han Sans SC",
+                 "Noto Sans SC", system-ui, sans-serif;
+  --font-en:     "Bahnschrift", "DIN Alternate", "Oswald",
+                 "Barlow Condensed", "Helvetica Neue", Arial, sans-serif;
+  --font-mix:    var(--font-cn);  /* CN+EN bodies — Bahnschrift falls back via stack */
+
+  /* ---- Scale (slide @ 1920×1080) ---- */
+  --t-display:   88px;   /* cover title CN */
+  --t-display-en:120px;  /* cover headline EN/numerals */
+  --t-h1:        56px;   /* section opener title */
+  --t-h2:        40px;   /* slide title */
+  --t-h3:        28px;   /* sub-title */
+  --t-lead:      22px;   /* lead paragraph */
+  --t-body:      18px;   /* body */
+  --t-small:     15px;   /* caption */
+  --t-micro:     12px;   /* footer, page-number label */
+
+  --tracking-cn:    .02em;  /* loose for Chinese */
+  --tracking-wide:  .18em;  /* labels, section eyebrows */
+  --tracking-x:     .32em;  /* very wide eyebrow */
+  --lh-tight:       1.15;
+  --lh-snug:        1.35;
+  --lh-body:        1.7;
+
+  /* ---- Layout ---- */
+  --margin:        80px;   /* slide outer margin */
+  --gutter:        24px;
+  --hairline-w:    1px;
+
+  /* ---- Shadow / elevation (used sparingly) ---- */
+  --shadow-card:   0 1px 0 rgba(0,0,0,.06), 0 18px 36px -24px rgba(0,0,0,.18);
+  --shadow-image:  0 24px 48px -28px rgba(0,0,0,.35);
+}
+
+/* ---------- Element defaults --------------------------------------- */
+html, body { background: var(--bg); color: var(--fg); }
+body {
+  font-family: var(--font-mix);
+  font-weight: 400;
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--tracking-cn);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display — used for slide covers / section openers.
+   Mix is intentional: a Bahnschrift number/word over a YaHei CN title. */
+.t-display, h1.display {
+  font-family: var(--font-cn);
+  font-weight: 300;          /* YaHei Light */
+  font-size: var(--t-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-cn);
+  color: var(--fg);
+}
+.t-display-en {
+  font-family: var(--font-en);
+  font-weight: 600;
+  font-stretch: 85%;
+  font-size: var(--t-display-en);
+  line-height: .95;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+}
+
+/* Slide-level titles */
+h1, .t-h1 {
+  font-family: var(--font-cn);
+  font-weight: 300;
+  font-size: var(--t-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-cn);
+}
+h2, .t-h2 {
+  font-family: var(--font-cn);
+  font-weight: 400;
+  font-size: var(--t-h2);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-cn);
+}
+h3, .t-h3 {
+  font-family: var(--font-cn);
+  font-weight: 700;
+  font-size: var(--t-h3);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-cn);
+}
+
+/* Eyebrow / section label — Bahnschrift condensed, all-caps, wide tracked */
+.eyebrow {
+  font-family: var(--font-en);
+  font-weight: 500;
+  font-stretch: 85%;
+  font-size: var(--t-small);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.eyebrow-x {
+  font-family: var(--font-en);
+  font-weight: 600;
+  font-stretch: 85%;
+  font-size: var(--t-micro);
+  letter-spacing: var(--tracking-x);
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+/* Body & lead */
+.t-lead {
+  font-size: var(--t-lead);
+  line-height: var(--lh-body);
+  color: var(--fg-2);
+  font-weight: 300;
+}
+.t-body { font-size: var(--t-body); line-height: var(--lh-body); }
+.t-small { font-size: var(--t-small); line-height: 1.55; color: var(--fg-muted); }
+.t-micro { font-size: var(--t-micro); line-height: 1.45; color: var(--fg-faint); letter-spacing: var(--tracking-wide); }
+
+/* Numerals (page numbers, big stats) — Bahnschrift, condensed */
+.numeral {
+  font-family: var(--font-en);
+  font-weight: 500;
+  font-stretch: 85%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .04em;
+}
+
+/* Vertical CN text — common in upmarket Chinese architectural decks */
+.t-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: .35em;
+}
+
+/* Rules */
+.rule { border: 0; border-top: var(--hairline-w) solid var(--hairline); }
+.rule-dark { border-top-color: var(--rule-dark); }

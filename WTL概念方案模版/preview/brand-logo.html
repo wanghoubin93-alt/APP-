@@ -1,0 +1,21 @@
+<!-- @dsCard group="Brand" viewport="700x200" name="WTL Logo" subtitle="深底反白 / 浅底原色 · 横向 lockup" -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="card.css">
+<style>
+  body{padding:0; display:flex}
+  .half{flex:1; display:flex; align-items:center; justify-content:center; min-height:100vh}
+  .light{background:var(--paper)}
+  .dark{background:var(--black)}
+  .half img{height:30px; width:auto; display:block}
+  .dark img{filter:brightness(0) invert(1)}
+</style>
+</head>
+<body>
+  <div class="half light"><img src="../assets/wtl-logo.png" alt="WTL · Way To Life Design"></div>
+  <div class="half dark"><img src="../assets/wtl-logo.png" alt="WTL · Way To Life Design"></div>
+</body>
+</html>
