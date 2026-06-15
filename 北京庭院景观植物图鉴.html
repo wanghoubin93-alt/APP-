@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北京庭院景观常用植物图鉴（1–12月）</title>
+<style>
+  :root{
+    --bg:#f6f5f0; --ink:#22312b; --line:#d9d2c5; --head:#2f4f3e;
+    --tree:#1f6f54; --shrub:#9c6b1f; --ground:#3a6ea5; --vine:#7a4a86;
+    --flw:#e26d8a; --fol:#d8a319; --fru:#d2691e; --eve:#2f8f5b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Helvetica,Arial,sans-serif;
+    line-height:1.55;font-size:14px}
+  header{background:linear-gradient(135deg,#2f4f3e,#1f6f54);color:#fff;padding:30px 22px}
+  header h1{margin:0 0 6px;font-size:24px;letter-spacing:1px}
+  header p{margin:2px 0;opacity:.92;font-size:13px}
+  .wrap{max-width:1500px;margin:0 auto;padding:18px 14px 60px}
+  .note{background:#fff;border:1px solid var(--line);border-left:5px solid var(--head);
+    padding:14px 16px;border-radius:6px;margin:16px 0;font-size:13px}
+  .legend{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:10px 0 6px}
+  .legend span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px}
+  .chip{width:16px;height:16px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.1)}
+  .c-flw{background:var(--flw)} .c-fol{background:var(--fol)}
+  .c-fru{background:var(--fru)} .c-eve{background:var(--eve)}
+  h2{margin:34px 0 4px;padding:8px 14px;border-radius:6px;color:#fff;font-size:18px}
+  h2.tree{background:var(--tree)} h2.shrub{background:var(--shrub)}
+  h2.ground{background:var(--ground)} h2.vine{background:var(--vine)}
+  .cat-desc{font-size:12.5px;color:#5a655e;margin:6px 2px 10px}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
+  table{border-collapse:collapse;width:100%;min-width:1280px;font-size:12.7px}
+  th,td{border:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+  thead th{background:var(--head);color:#fff;position:sticky;top:0;font-weight:600;white-space:nowrap}
+  tbody tr:nth-child(even){background:#faf9f5}
+  tbody tr:hover{background:#eef5ef}
+  .name{font-weight:700;font-size:13.5px;white-space:nowrap}
+  .latin{font-style:italic;color:#566;white-space:nowrap}
+  .tag{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;color:#fff;white-space:nowrap}
+  .t-eve{background:#2f8f5b} .t-per{background:#3a6ea5} .t-dec{background:#9c6b1f} .t-ann{background:#c2553f}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1px;min-width:168px}
+  .grid b{display:block;text-align:center;font-size:9px;color:#888;font-weight:500}
+  .cell{height:15px;border-radius:2px;background:#ececec}
+  .cell.flw{background:var(--flw)} .cell.fol{background:var(--fol)}
+  .cell.fru{background:var(--fru)} .cell.eve{background:var(--eve)}
+  .imglink{display:inline-block;padding:3px 9px;border:1px solid var(--head);border-radius:14px;
+    color:var(--head);text-decoration:none;font-size:11.5px;white-space:nowrap}
+  .imglink:hover{background:var(--head);color:#fff}
+  .sun::before{content:"☀ "} .half::before{content:"◑ "} .shade::before{content:"☾ "}
+  footer{max-width:1500px;margin:0 auto;padding:18px 16px;color:#697;font-size:12px}
+  td small{color:#6a756e}
+</style>
+</head>
+<body>
+<header>
+  <h1>北京庭院景观常用植物图鉴</h1>
+  <p>按 1–12 月观赏节律整理 · 适用华北暖温带气候（耐寒区 USDA 5b–6b，最低约 −15 ℃）</p>
+  <p>分类：乔木 / 灌木 / 地被·宿根草本·观赏草 / 藤本 — 含拉丁名、习性、花期、光照与水肥需求及配置建议</p>
+</header>
+
+<div class="wrap">
+
+  <div class="note">
+    <b>使用说明：</b>右侧「12 月观赏历」每格代表一个月（1→12），颜色含义见下方图例，可一眼看出某月份各品种的观赏看点；
+    「类型」标签区分 <span class="tag t-eve">常绿</span>
+    <span class="tag t-per">宿根</span>
+    <span class="tag t-dec">落叶</span>
+    <span class="tag t-ann">一/二年生</span>；
+    光照符号 ☀ 全日照、◑ 半阴、☾ 喜阴。每行末尾「看图」按钮可打开实拍图片（株型与开花效果），便于核对苗源。
+    数据为北京露地栽培的常规经验值，具体以苗圃货源与小气候为准。
+  </div>
+
+  <div class="legend">
+    <strong>观赏历图例：</strong>
+    <span><i class="chip c-flw"></i> 花期 / 盛花</span>
+    <span><i class="chip c-fol"></i> 观叶 · 秋色叶 · 新叶</span>
+    <span><i class="chip c-fru"></i> 观果 · 红枝冬态</span>
+    <span><i class="chip c-eve"></i> 常绿期 · 越冬绿叶</span>
+    <span><i class="chip" style="background:#ececec"></i> 休眠 / 无特别看点</span>
+  </div>
+
+  <!-- ============ 乔木 ============ -->
+  <h2 class="tree">一、乔木（骨架 · 庭荫 · 行道）</h2>
+  <p class="cat-desc">承担庭院空间骨架与遮荫，先定乔木再配灌木地被。北京宜以乡土落叶乔木为主、常绿针叶为骨干，兼顾春花与秋色。</p>
+  <div class="scroll"><table>
+    <thead><tr>
+      <th>品种名 / 拉丁名</th><th>类型</th><th>高度</th><th>花期·花色</th>
+      <th>株型与开花效果</th><th>光照</th><th>水肥</th><th>耐性·土壤</th>
+      <th>配置·用途建议</th>
+      <th>12 月观赏历<div class="grid" style="min-width:168px">
+        <b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b><b>10</b><b>11</b><b>12</b></div></th>
+      <th>图片</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><div class="name">银杏</div><div class="latin">Ginkgo biloba</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>15–25 m</td>
+        <td>不以花胜（4月）</td>
+        <td>主干通直、树冠卵圆～广卵形，扇形叶；秋季满树金黄，落叶期极具观赏性。</td>
+        <td class="sun">全日照</td><td>中等；耐旱、忌积水</td>
+        <td>极耐寒、抗污染；深厚排水良好土壤</td>
+        <td>庭荫树、行道树、孤植主景；雌株落果有味，宜选雄株。生长慢、长寿。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=银杏%20树%20株型%20秋色">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">国槐</div><div class="latin">Styphnolobium japonicum</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>10–20 m</td>
+        <td>7–8月 · 黄白色</td>
+        <td>树冠开展圆球形，羽状复叶；夏季满树乳黄花序，落花如雪，秋有荚果。北京市树。</td>
+        <td class="sun">全日照</td><td>低～中；很耐旱耐瘠</td>
+        <td>极耐寒耐旱、抗污染、耐盐碱</td>
+        <td>最经典的庭荫/行道乔木，遮荫效果好；龙爪槐为下垂型景观变种。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell fru"></span><span class="cell fru"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=国槐%20开花%20树形">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">白蜡</div><div class="latin">Fraxinus chinensis</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>10–15 m</td>
+        <td>不显著（4–5月）</td>
+        <td>树冠卵圆、枝叶整齐，羽状复叶；秋叶黄至紫红，是优良秋色叶庭荫树。</td>
+        <td class="sun">全日照</td><td>中；耐旱亦耐湿</td>
+        <td>耐寒耐盐碱、适应性强</td>
+        <td>行道、庭荫、滨水均可；冠形规整易养护。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=白蜡树%20秋色%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">元宝枫</div><div class="latin">Acer truncatum</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>8–12 m</td>
+        <td>4–5月 · 黄绿小花</td>
+        <td>树冠圆整，掌状叶；秋叶橙红至深红，北方最佳红叶乔木之一，翅果似元宝。</td>
+        <td class="half">全日照～半阴</td><td>中等；忌涝</td>
+        <td>耐寒耐旱、乡土树种</td>
+        <td>秋景主景、组团点缀；中型庭院理想庭荫树。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=元宝枫%20红叶%20树形">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">玉兰（白玉兰）</div><div class="latin">Yulania denudata</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>6–12 m</td>
+        <td>3–4月 · 白（先花后叶）</td>
+        <td>树姿挺拔，早春满树大型白花先于叶开放，开花效果极震撼，为报春名木。</td>
+        <td class="sun">全日照</td><td>中～高；喜湿润肥沃、忌积水</td>
+        <td>较耐寒，避风向阳处更佳</td>
+        <td>入口、主景孤植或对植；可配紫玉兰、二乔玉兰延长花期。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=白玉兰%20开花%20树形">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">西府海棠</div><div class="latin">Malus × micromalus</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>3–5 m</td>
+        <td>4月 · 粉红～白</td>
+        <td>树姿直立有层次，花蕾红艳、开放粉白，繁花满枝；秋有红黄小果，观花观果俱佳。</td>
+        <td class="sun">全日照</td><td>中等；喜肥沃排水</td>
+        <td>耐寒耐旱</td>
+        <td>春花主景小乔木，宜列植成花径或与丁香/连翘组团。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fru"></span><span class="cell fru"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=西府海棠%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">紫叶李</div><div class="latin">Prunus cerasifera 'Atropurpurea'</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>4–8 m</td>
+        <td>4月 · 淡粉白</td>
+        <td>全株紫红叶为最大看点，整季叶色；早春先开淡粉小花。彩叶骨干小乔木。</td>
+        <td class="sun">全日照（光足色浓）</td><td>中等</td>
+        <td>耐寒耐旱、适应性强</td>
+        <td>彩叶点景、与绿色背景对比；勿过度密植以免色彩沉闷。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=紫叶李%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">碧桃</div><div class="latin">Prunus persica 'Duplex'</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>3–5 m</td>
+        <td>4月 · 红/粉/白重瓣</td>
+        <td>开张树冠，花重瓣密集，有红白双色品种，盛花极艳丽，典型春花小乔木。</td>
+        <td class="sun">全日照</td><td>中等；忌涝</td>
+        <td>耐寒耐旱；需防蚜虫蛀干</td>
+        <td>春景组团、孤植点景；可与连翘黄花、海棠粉花搭配。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=碧桃%20开花%20树形">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">栾树</div><div class="latin">Koelreuteria paniculata</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>8–15 m</td>
+        <td>6–7月 · 金黄</td>
+        <td>圆整树冠，夏季顶生金黄花序，秋季粉红～红褐灯笼状蒴果满树，"四季有景"。</td>
+        <td class="sun">全日照</td><td>低～中；耐旱</td>
+        <td>耐寒耐旱耐瘠、抗风</td>
+        <td>夏花庭荫/行道树，花果叶三季可赏，养护省心。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell fru"></span><span class="cell fru"></span><span class="cell fol"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=栾树%20开花%20蒴果%20树形">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">楸树</div><div class="latin">Catalpa bungei</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>8–15 m</td>
+        <td>4–5月 · 淡粉白带紫斑</td>
+        <td>主干通直、树形高雅，大叶浓荫，春末钟状花成簇下垂，传统名贵庭荫树。</td>
+        <td class="sun">全日照</td><td>中；喜深厚湿润</td>
+        <td>耐寒、较耐盐碱</td>
+        <td>庭院主景、对植于建筑前；冠大荫浓。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=楸树%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">油松</div><div class="latin">Pinus tabuliformis</div></td>
+        <td><span class="tag t-eve">常绿</span></td><td>10–25 m</td>
+        <td>不观花</td>
+        <td>老树冠扁平如伞、苍劲古朴，针叶常绿，冬季骨架与雪景极佳。北京乡土针叶。</td>
+        <td class="sun">全日照</td><td>低；很耐旱</td>
+        <td>极耐寒耐旱耐瘠、长寿</td>
+        <td>常绿骨架、孤植造景、与山石配；冬季庭院主景。</td>
+        <td><div class="grid"><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=油松%20造型%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">白皮松</div><div class="latin">Pinus bungeana</div></td>
+        <td><span class="tag t-eve">常绿</span></td><td>10–20 m</td>
+        <td>不观花</td>
+        <td>树皮斑驳灰白如迷彩、极具观赏性，常多干丛生，针叶常绿。高档常绿景观树。</td>
+        <td class="sun">全日照</td><td>低～中；耐旱忌涝</td>
+        <td>耐寒耐旱、抗污染、长寿</td>
+        <td>主景孤植/对植，观干为主；庭院身价最高的常绿之一。</td>
+        <td><div class="grid"><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=白皮松%20树皮%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">圆柏（桧柏）</div><div class="latin">Juniperus chinensis</div></td>
+        <td><span class="tag t-eve">常绿</span></td><td>5–15 m</td>
+        <td>不观花</td>
+        <td>幼树塔形、老树不规则，鳞叶常绿深绿，易整形（塔柏/龙柏为其栽培变型）。</td>
+        <td class="sun">全日照～半阴</td><td>低；耐旱</td>
+        <td>极耐寒耐旱耐修剪</td>
+        <td>常绿背景、绿篱、造型柱；注意勿与梨/海棠近植（梨锈病转主）。</td>
+        <td><div class="grid"><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=圆柏%20龙柏%20株型">看图</a></td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <!-- ============ 灌木 ============ -->
+  <h2 class="shrub">二、灌木（中层 · 花境 · 绿篱）</h2>
+  <p class="cat-desc">构成视线中层，承担主要花量与季相变化。北京花灌木以春花（连翘、丁香、榆叶梅、迎春）最为壮观，夏秋以月季、木槿、紫薇接力。</p>
+  <div class="scroll"><table>
+    <thead><tr>
+      <th>品种名 / 拉丁名</th><th>类型</th><th>高度</th><th>花期·花色</th>
+      <th>株型与开花效果</th><th>光照</th><th>水肥</th><th>耐性·土壤</th>
+      <th>配置·用途建议</th>
+      <th>12 月观赏历<div class="grid" style="min-width:168px">
+        <b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b><b>10</b><b>11</b><b>12</b></div></th>
+      <th>图片</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><div class="name">迎春</div><div class="latin">Jasminum nudiflorum</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>0.3–1.5 m</td>
+        <td>2–3月 · 黄（先花后叶）</td>
+        <td>枝条细长拱垂、绿枝四季可观，早春最先开金黄花，报春第一花。</td>
+        <td class="half">全日照～半阴</td><td>中等；耐旱</td>
+        <td>耐寒耐旱、适应性强</td>
+        <td>坡地、挡墙、水岸垂枝；可作开花地被覆盖。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=迎春花%20株型%20开花">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">连翘</div><div class="latin">Forsythia suspensa</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>1–3 m</td>
+        <td>3–4月 · 金黄（先花后叶）</td>
+        <td>枝条拱形开展，早春满枝金黄花密布，开花效果热烈，是北京最具代表性的报春灌木。</td>
+        <td class="sun">全日照</td><td>中等；耐旱</td>
+        <td>耐寒耐旱耐瘠</td>
+        <td>丛植/列植花篱、坡地、与紫丁香（黄紫对比）经典搭配。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=连翘%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">榆叶梅</div><div class="latin">Prunus triloba</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>2–4 m</td>
+        <td>4月 · 粉红（先花后叶）</td>
+        <td>枝叶繁密，早春满枝重瓣粉花，团团锦簇，是北方春季最常见、最艳的花灌木之一。</td>
+        <td class="sun">全日照</td><td>中等；忌涝</td>
+        <td>耐寒耐旱</td>
+        <td>春景组团核心，与连翘黄花相映；列植成花带。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=榆叶梅%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">紫丁香</div><div class="latin">Syringa oblata</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>2–4 m</td>
+        <td>4–5月 · 紫/白，浓香</td>
+        <td>树冠圆整，圆锥花序繁密，开花时浓香四溢，是北京最具人气的香花灌木。</td>
+        <td class="half">全日照～半阴</td><td>中等；忌积水</td>
+        <td>耐寒耐旱、乡土</td>
+        <td>窗前、园路、坐憩区闻香；丛植成丁香丛或与连翘搭配。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=紫丁香%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">黄刺玫</div><div class="latin">Rosa xanthina</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>1.5–3 m</td>
+        <td>5月 · 金黄</td>
+        <td>枝条拱垂、羽叶细致，春末满枝黄花，自然野趣，极耐粗放。</td>
+        <td class="sun">全日照</td><td>低；很耐旱</td>
+        <td>极耐寒耐旱耐瘠、乡土</td>
+        <td>坡地、自然式花境、防护边界；几乎免养护。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=黄刺玫%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">月季</div><div class="latin">Rosa hybrids</div></td>
+        <td><span class="tag t-dec">落叶/半常绿</span></td><td>0.5–2 m（藤本可达3m+）</td>
+        <td>5–10月 · 全色系，多次开花</td>
+        <td>花型饱满、花期超长、色彩齐全，是夏秋花量担当；丰花/灌丛/藤本类型多样。北京市花。</td>
+        <td class="sun">全日照（≥6h）</td><td>高；喜肥水、需追肥</td>
+        <td>较耐寒（重剪/堆土越冬更稳），喜肥沃排水</td>
+        <td>花境主角、月季园、花架；需通风防黑斑/白粉病，勤修剪促复花。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=月季%20花境%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">锦带花</div><div class="latin">Weigela florida</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>1–2.5 m</td>
+        <td>5–6月 · 粉红（可二次）</td>
+        <td>枝条开展拱形，花漏斗状成串密生，粉色繁花覆盖全株，有金叶/紫叶品种。</td>
+        <td class="half">全日照～半阴</td><td>中等</td>
+        <td>耐寒、适应性强</td>
+        <td>花境中层、自然式丛植；金叶品种兼作彩叶。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=锦带花%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">金银木</div><div class="latin">Lonicera maackii</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>2–4 m</td>
+        <td>5月 · 白转黄，清香</td>
+        <td>树冠圆球丰满，花白黄相映清香，秋冬红果满枝引鸟，观花观果俱佳，耐阴。</td>
+        <td class="shade">半阴～耐阴</td><td>中等；耐旱</td>
+        <td>耐寒耐旱耐阴、乡土</td>
+        <td>林下/建筑北侧背阴处的少数开花灌木之选；红果冬景。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fru"></span><span class="cell fru"></span><span class="cell fru"></span><span class="cell fru"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=金银木%20红果%20开花">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">珍珠梅</div><div class="latin">Sorbaria sorbifolia</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>1–2 m</td>
+        <td>6–8月 · 白</td>
+        <td>羽状复叶清秀，顶生大型圆锥花序，花蕾如珍珠、盛开如雪，夏季白花期长且耐阴。</td>
+        <td class="shade">半阴～耐阴</td><td>中等；喜湿润</td>
+        <td>耐寒耐阴</td>
+        <td>背阴处夏花灌木，林缘、墙隅；填补夏季阴处花量空白。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=珍珠梅%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">木槿</div><div class="latin">Hibiscus syriacus</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>2–4 m</td>
+        <td>7–9月 · 紫/粉/白</td>
+        <td>直立丛生，盛夏至初秋连续开大花，单花朝开暮落但花量大、花期长，盛夏花担当。</td>
+        <td class="sun">全日照</td><td>中等</td>
+        <td>耐寒耐旱耐修剪</td>
+        <td>花篱、绿篱开花段、夏季补花；耐修剪可造型。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=木槿%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">紫薇</div><div class="latin">Lagerstroemia indica</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>2–6 m</td>
+        <td>7–9月 · 红/紫/粉/白</td>
+        <td>树皮光洁、枝干虬曲有韵，圆锥花序皱瓣似绉纱，盛夏花开百日，"百日红"。</td>
+        <td class="sun">全日照</td><td>中等；喜肥</td>
+        <td>北京可露地（宜背风向阳、幼树注意越冬）</td>
+        <td>盛夏主景小乔/灌木，孤植或列植；花后修剪促二次花。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=紫薇%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">牡丹</div><div class="latin">Paeonia × suffruticosa</div></td>
+        <td><span class="tag t-dec">落叶（木本）</span></td><td>0.8–1.8 m</td>
+        <td>4–5月 · 全色系大花</td>
+        <td>花大色艳、雍容华贵，被誉花王；植株丛状，叶形美观，开花效果极隆重。</td>
+        <td class="half">全日照～午后半阴</td><td>中～高；喜肥沃排水、忌涝</td>
+        <td>耐寒；忌湿热积水、需高燥地</td>
+        <td>专类牡丹台/花池、主景花坛；配芍药延续花期。"谷雨看牡丹"。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=牡丹%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">棣棠</div><div class="latin">Kerria japonica</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>1–2 m</td>
+        <td>4–5月 · 金黄（重瓣品种更艳）</td>
+        <td>绿枝拱垂、四季翠绿，春开金黄花，耐阴，绿枝冬态亦可赏。</td>
+        <td class="shade">半阴～耐阴</td><td>中；喜湿润</td>
+        <td>耐寒、喜半阴</td>
+        <td>林下、墙隅、背阴花境；与珍珠梅、玉簪组耐阴组团。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=棣棠%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">红瑞木</div><div class="latin">Cornus alba</div></td>
+        <td><span class="tag t-dec">落叶</span></td><td>1.5–3 m</td>
+        <td>5–6月 · 白（次要）</td>
+        <td>最大看点是落叶后鲜红的枝干，冬季雪中红枝极醒目；夏白花、秋红叶白果。</td>
+        <td class="half">全日照～半阴</td><td>中～高；耐湿</td>
+        <td>极耐寒耐湿</td>
+        <td>冬景核心——丛植成红枝丛，配常绿/白雪背景；水岸尤佳。</td>
+        <td><div class="grid"><span class="cell fru"></span><span class="cell fru"></span><span class="cell fru"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fol"></span><span class="cell fru"></span><span class="cell fru"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=红瑞木%20红枝%20冬季">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">大叶黄杨（冬青卫矛）</div><div class="latin">Euonymus japonicus</div></td>
+        <td><span class="tag t-eve">常绿</span></td><td>0.5–3 m（可修剪）</td>
+        <td>6月 · 黄绿（不显著）</td>
+        <td>叶革质光亮常绿，极耐修剪，可剪成规整绿篱、球或造型，有金边/银边彩叶品种。</td>
+        <td class="half">全日照～半阴</td><td>中等</td>
+        <td>耐寒耐修剪、抗污染</td>
+        <td>常绿绿篱、模纹色块、造型球的主力材料。</td>
+        <td><div class="grid"><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=大叶黄杨%20绿篱%20造型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">小叶黄杨（瓜子黄杨）</div><div class="latin">Buxus sinica</div></td>
+        <td><span class="tag t-eve">常绿</span></td><td>0.3–1.5 m</td>
+        <td>不观花</td>
+        <td>叶小密生、四季深绿，生长慢、耐剪，最适低矮规整绿篱与模纹图案。</td>
+        <td class="half">全日照～半阴</td><td>中等</td>
+        <td>耐寒耐阴耐修剪</td>
+        <td>矮绿篱、花坛镶边、模纹植坛骨架。</td>
+        <td><div class="grid"><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=小叶黄杨%20绿篱%20模纹">看图</a></td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <!-- ============ 地被 / 宿根 / 观赏草 ============ -->
+  <h2 class="ground">三、地被 · 宿根草本 · 观赏草（底层 · 花境 · 覆地）</h2>
+  <p class="cat-desc">覆盖地表、抑制杂草、丰富花境层次。优先选耐寒宿根，一次种植多年观赏；阴处选玉簪/麦冬，旱处选八宝景天/马蔺/观赏草。</p>
+  <div class="scroll"><table>
+    <thead><tr>
+      <th>品种名 / 拉丁名</th><th>类型</th><th>高度</th><th>花期·花色</th>
+      <th>株型与开花效果</th><th>光照</th><th>水肥</th><th>耐性·土壤</th>
+      <th>配置·用途建议</th>
+      <th>12 月观赏历<div class="grid" style="min-width:168px">
+        <b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b><b>10</b><b>11</b><b>12</b></div></th>
+      <th>图片</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><div class="name">二月兰（诸葛菜）</div><div class="latin">Orychophragmus violaceus</div></td>
+        <td><span class="tag t-ann">二年生·自播</span></td><td>20–50 cm</td>
+        <td>3–5月 · 蓝紫</td>
+        <td>早春成片蓝紫花海，自播繁衍年年再生，耐阴，是北京林下春季最美野趣地被。</td>
+        <td class="shade">半阴～耐阴</td><td>低；耐旱</td>
+        <td>耐寒、自播性强、极粗放</td>
+        <td>乔木林下、坡地大面积铺撒，营造春季花海；几乎免养护。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=二月兰%20花海%20林下">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">鸢尾</div><div class="latin">Iris tectorum / germanica</div></td>
+        <td><span class="tag t-per">宿根</span></td><td>30–60 cm</td>
+        <td>4–5月 · 蓝紫/白/黄</td>
+        <td>剑形叶丛立挺括，花形如蝶，蓝紫色雅致；叶丛季相整齐，花后仍可观叶。</td>
+        <td class="half">全日照～半阴</td><td>中等；德国鸢尾耐旱、忌涝</td>
+        <td>耐寒、适应性强</td>
+        <td>花境前中层、水岸（黄菖蒲耐湿）、林缘成丛；分株繁殖快。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=鸢尾%20开花%20花境">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">芍药</div><div class="latin">Paeonia lactiflora</div></td>
+        <td><span class="tag t-per">宿根</span></td><td>60–90 cm</td>
+        <td>5月 · 全色系大花</td>
+        <td>花大丰满、香气宜人，被誉花相；丛生株型饱满，紧接牡丹花期，"立夏看芍药"。</td>
+        <td class="sun">全日照</td><td>中～高；喜肥沃排水</td>
+        <td>耐寒；忌积水</td>
+        <td>专类花台、花境主景、可作切花；与牡丹组合延长观花。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=芍药%20开花%20株型">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">马蔺（马莲）</div><div class="latin">Iris lactea</div></td>
+        <td><span class="tag t-per">宿根</span></td><td>20–40 cm</td>
+        <td>5月 · 蓝紫</td>
+        <td>叶丛低矮坚韧密集，蓝紫小鸢尾花清雅；极耐践踏、耐盐碱，乡土覆地强者。</td>
+        <td class="sun">全日照</td><td>低；极耐旱</td>
+        <td>极耐寒耐旱耐盐碱耐瘠、乡土</td>
+        <td>护坡、路缘、粗放地被、盐碱地绿化；几乎零养护。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=马蔺%20开花%20地被">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">萱草（金娃娃/大花萱草）</div><div class="latin">Hemerocallis fulva</div></td>
+        <td><span class="tag t-per">宿根</span></td><td>30–80 cm</td>
+        <td>6–8月 · 橙黄/复色（现代品种可复花）</td>
+        <td>叶丛拱垂浓绿，花朵硕大鲜亮，群植成片黄橙花带，皮实易养、花量大。</td>
+        <td class="half">全日照～半阴</td><td>中等；耐旱</td>
+        <td>耐寒耐旱耐瘠、极粗放</td>
+        <td>大面积花带、路缘、坡地；"金娃娃"矮生品种最常用作色块地被。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=金娃娃萱草%20花带%20地被">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">玉簪</div><div class="latin">Hosta plantaginea</div></td>
+        <td><span class="tag t-per">宿根</span></td><td>30–60 cm</td>
+        <td>7–9月 · 白，浓香</td>
+        <td>宽大心形叶丛美观（有金边/蓝叶品种），夏夜白花清香，是阴地最佳观叶观花地被。</td>
+        <td class="shade">喜阴～半阴（忌强光灼叶）</td><td>中～高；喜湿润肥沃</td>
+        <td>耐寒耐阴；不耐旱不耐曝晒</td>
+        <td>建筑北侧、林下、墙根背阴处的首选地被；与玉簪/蕨类组阴生花境。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=玉簪%20开花%20叶丛">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">八宝景天</div><div class="latin">Hylotelephium spectabile</div></td>
+        <td><span class="tag t-per">宿根·多肉</span></td><td>30–50 cm</td>
+        <td>8–10月 · 粉红</td>
+        <td>肉质叶丛整齐，秋季伞房花序粉红成片，引蝶；耐旱极皮实，秋色花担当。</td>
+        <td class="sun">全日照</td><td>低；很耐旱、忌涝</td>
+        <td>耐寒耐旱耐瘠</td>
+        <td>秋季花境、屋顶/旱生花园、色块地被；干花宿存冬季可赏。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=八宝景天%20开花%20地被">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">金鸡菊</div><div class="latin">Coreopsis spp.</div></td>
+        <td><span class="tag t-per">宿根</span></td><td>30–60 cm</td>
+        <td>6–9月 · 金黄</td>
+        <td>株丛细密，整夏满株金黄小花，明快持久，耐旱易养，适合大面积粗放花海。</td>
+        <td class="sun">全日照</td><td>低；耐旱</td>
+        <td>耐寒耐旱耐瘠</td>
+        <td>自然式花境、坡地花海、道路绿化带；与波斯菊混播效果好。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=金鸡菊%20花海%20地被">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">波斯菊（秋英）</div><div class="latin">Cosmos bipinnatus</div></td>
+        <td><span class="tag t-ann">一年生·自播</span></td><td>60–120 cm</td>
+        <td>7–10月 · 粉/白/紫红</td>
+        <td>叶丝裂轻盈，花朵随风摇曳成片花海，浪漫自然，自播可年年再生。</td>
+        <td class="sun">全日照</td><td>低；耐旱耐瘠（肥多徒长）</td>
+        <td>不耐寒（一年生）、极易种</td>
+        <td>大面积草花花海、空地快速绿化、留白地块的低成本方案。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=波斯菊%20花海">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">菊花（地被菊）</div><div class="latin">Chrysanthemum × morifolium</div></td>
+        <td><span class="tag t-per">宿根</span></td><td>30–60 cm</td>
+        <td>9–11月 · 全色系</td>
+        <td>秋季当家花卉，地被菊株丛矮密、花量极大成球状，是北京深秋最重要的花色来源。</td>
+        <td class="sun">全日照</td><td>中等；喜肥</td>
+        <td>耐寒（地被菊露地越冬）</td>
+        <td>秋季花坛/花境主角、色块；摘心促分枝增花量。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=地被菊%20秋季%20花坛">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">麦冬（沿阶草）</div><div class="latin">Ophiopogon japonicus</div></td>
+        <td><span class="tag t-eve">常绿宿根</span></td><td>15–30 cm</td>
+        <td>7–8月 · 淡紫（不显著）</td>
+        <td>细线形叶四季常绿成密毯，耐阴耐践踏，是最常用的常绿覆地材料，冬季仍绿。</td>
+        <td class="shade">耐阴～半阴</td><td>中等</td>
+        <td>耐寒耐阴、极耐粗放</td>
+        <td>乔木下、园路镶边、裸土覆绿、护坡；四季常绿底色。</td>
+        <td><div class="grid"><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span><span class="cell eve"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=麦冬%20地被%20沿阶草">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">林荫鼠尾草</div><div class="latin">Salvia nemorosa</div></td>
+        <td><span class="tag t-per">宿根</span></td><td>30–50 cm</td>
+        <td>5–7月 · 蓝紫（可复花）</td>
+        <td>直立蓝紫花穗成片竖线条，色彩高级、花期长，现代花境的人气主材。</td>
+        <td class="sun">全日照</td><td>低～中；耐旱</td>
+        <td>耐寒耐旱</td>
+        <td>自然式/混合花境的竖线条与冷色调担当；花后修剪促二次花。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=林荫鼠尾草%20花境">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">细叶芒 / 观赏草</div><div class="latin">Miscanthus sinensis</div></td>
+        <td><span class="tag t-per">宿根（观赏草）</span></td><td>1–1.8 m</td>
+        <td>9–11月 · 银白花穗</td>
+        <td>株丛纤细飘逸，秋季抽银白～粉色花穗，逆光剔透；秋冬枯黄株形宿存，冬态有韵。</td>
+        <td class="sun">全日照</td><td>低；耐旱</td>
+        <td>耐寒耐旱、免养护</td>
+        <td>现代花境/野趣草甸的结构与动感担当；狼尾草、蓝羊茅同类常用。</td>
+        <td><div class="grid"><span class="cell fol"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell fol"></span><span class="cell fol"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=细叶芒%20观赏草%20花境">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">白三叶</div><div class="latin">Trifolium repens</div></td>
+        <td><span class="tag t-per">宿根</span></td><td>10–20 cm</td>
+        <td>5–9月 · 白</td>
+        <td>匍匐成密毯、耐踏，三出叶清新、点缀白色球花；固氮、覆地抑草成本低。</td>
+        <td class="half">全日照～半阴</td><td>中等</td>
+        <td>耐寒、耐践踏</td>
+        <td>开放草坪替代、林下覆绿、护坡；管理粗放。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fol"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=白三叶%20地被%20草坪">看图</a></td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <!-- ============ 藤本 ============ -->
+  <h2 class="vine">四、藤本（垂直绿化 · 花架 · 墙面）</h2>
+  <p class="cat-desc">用于花架、廊架、墙面与挡墙垂直绿化，扩展立体绿量。北京常用以紫藤、凌霄、地锦、月季为主。</p>
+  <div class="scroll"><table>
+    <thead><tr>
+      <th>品种名 / 拉丁名</th><th>类型</th><th>攀援高度</th><th>花期·花色</th>
+      <th>株型与开花效果</th><th>光照</th><th>水肥</th><th>耐性·土壤</th>
+      <th>配置·用途建议</th>
+      <th>12 月观赏历<div class="grid" style="min-width:168px">
+        <b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b><b>10</b><b>11</b><b>12</b></div></th>
+      <th>图片</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><div class="name">紫藤</div><div class="latin">Wisteria sinensis</div></td>
+        <td><span class="tag t-dec">落叶藤</span></td><td>8–15 m</td>
+        <td>4–5月 · 紫（先花后叶）</td>
+        <td>老茎苍劲缠绕，春季紫色花序成串垂挂如帘，开花效果极壮观，传统花架名材。</td>
+        <td class="sun">全日照</td><td>中等；耐旱</td>
+        <td>耐寒耐旱、长寿</td>
+        <td>花架/廊架主材、入口门廊；需坚固棚架承重，定期整枝。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=紫藤%20花架%20开花">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">凌霄</div><div class="latin">Campsis grandiflora</div></td>
+        <td><span class="tag t-dec">落叶藤</span></td><td>5–10 m</td>
+        <td>7–9月 · 橙红</td>
+        <td>气生根攀附，盛夏至秋开漏斗状橙红大花成串，热烈醒目，夏季垂直绿化花担当。</td>
+        <td class="sun">全日照</td><td>中等；耐旱</td>
+        <td>耐寒耐旱、攀附力强</td>
+        <td>墙面、廊柱、棚架夏花覆盖；美洲凌霄花更密更耐寒。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=凌霄%20开花%20墙面">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">地锦（爬山虎）</div><div class="latin">Parthenocissus tricuspidata</div></td>
+        <td><span class="tag t-dec">落叶藤</span></td><td>10–20 m</td>
+        <td>不以花胜（6月）</td>
+        <td>吸盘攀爬，夏季满墙翠绿、秋季火红，是覆盖墙面/挡墙最经典高效的彩叶藤本。</td>
+        <td class="half">全日照～耐阴</td><td>低；耐旱</td>
+        <td>极耐寒耐旱耐阴、粗放</td>
+        <td>大面积墙面/挡土墙绿化、建筑降温；秋季红叶立面景观。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell fol"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=爬山虎%20墙面%20红叶">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">金银花</div><div class="latin">Lonicera japonica</div></td>
+        <td><span class="tag t-eve">半常绿藤</span></td><td>3–6 m</td>
+        <td>5–7月 · 白转黄，浓香</td>
+        <td>缠绕攀援，花白黄相间（"金银"），香气清甜，半常绿在北京暖冬可部分留叶。</td>
+        <td class="half">全日照～半阴</td><td>中等；耐旱</td>
+        <td>耐寒耐旱耐阴、极粗放</td>
+        <td>篱垣、花架、护坡覆盖；闻香区、可入药观赏两用。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=金银花%20开花%20藤本">看图</a></td>
+      </tr>
+      <tr>
+        <td><div class="name">藤本月季</div><div class="latin">Rosa (Climbing group)</div></td>
+        <td><span class="tag t-dec">落叶/半常绿藤</span></td><td>2–5 m</td>
+        <td>5–10月 · 全色系，多次</td>
+        <td>枝条长可牵引上架，花量极大、可多季开花，营造花墙/拱门效果惊艳。</td>
+        <td class="sun">全日照（≥6h）</td><td>高；喜肥水</td>
+        <td>较耐寒（冬需保护牵引枝），喜肥沃</td>
+        <td>花架拱门、花墙、廊柱；需牵引绑扎、防病修剪。</td>
+        <td><div class="grid"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell flw"></span><span class="cell"></span><span class="cell"></span></div></td>
+        <td><a class="imglink" target="_blank" href="https://image.baidu.com/search/index?tn=baiduimage&word=藤本月季%20花墙%20拱门">看图</a></td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <div class="note" style="margin-top:30px">
+    <b>配置建议小结（北京庭院）</b>
+    <ul style="margin:8px 0 0;padding-left:20px">
+      <li><b>季相搭配：</b>早春迎春→连翘/玉兰→榆叶梅/海棠/丁香/牡丹（清明—谷雨高峰）→芍药/月季→夏栾树/木槿/紫薇/萱草→秋八宝景天/菊花/观赏草+元宝枫红叶→冬油松/白皮松/红瑞木红枝。做到"三季有花、四季有景"。</li>
+      <li><b>背阴处（建筑北侧、树下）：</b>选玉簪、麦冬、二月兰、棣棠、珍珠梅、金银木、鸢尾，避免在阴处强求月季、八宝景天等喜光植物。</li>
+      <li><b>旱生/粗放区：</b>国槐、油松、黄刺玫、马蔺、八宝景天、金鸡菊、观赏草，节水耐旱、近免养护。</li>
+      <li><b>越冬注意：</b>紫薇、藤本/丰花月季幼苗在特冷年宜培土或包裹防护；新植乔灌木入冬前浇足"封冻水"、早春浇"返青水"是北京成活关键。</li>
+      <li><b>土壤：</b>北京多偏碱性，喜酸植物（杜鹃、栀子等）露地表现差，本表已按耐碱/适应性筛选。</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  说明：本表为北京（华北暖温带）露地庭院景观选种参考，习性数据为常规经验值，实际花期受当年气候、小气候与苗龄影响会有前后浮动；
+  "看图"按钮链接至图片搜索结果，用于查看各品种株型与开花效果实拍，便于现场核对苗源。建议落地前结合具体场地光照、土壤与甲方喜好做品种微调。
+</footer>
+
+</body>
+</html>
