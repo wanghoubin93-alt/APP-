@@ -343,6 +343,16 @@ body.editing #ovseq3 .futbg *{animation-play-state:paused}
   font-size:13px;letter-spacing:.08em;padding:9px 14px;border-radius:8px;cursor:pointer}
 #tocmenu a:hover{background:rgba(0,138,171,.25);color:#fff}
 #tocmenu a em{font-style:normal;font-size:10px;color:var(--dim);font-variant-numeric:tabular-nums;letter-spacing:.05em}
+
+/* 复制修改弹窗 */
+#copymodal{position:absolute;inset:0;background:rgba(4,12,26,.82);z-index:40;display:none;align-items:center;justify-content:center}
+#copymodal.on{display:flex}
+.cmbox{width:min(720px,90vw);background:#0E2242;border:1px solid rgba(0,138,171,.55);border-radius:14px;padding:20px;box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.cmbox h3{font-size:14px;color:#fff;margin-bottom:12px;letter-spacing:.06em;font-weight:600}
+.cmbox textarea{width:100%;height:min(300px,40vh);background:#081830;color:#C7D5EC;border:1px solid rgba(160,185,230,.3);border-radius:8px;padding:12px;font-size:12px;font-family:inherit;resize:vertical}
+.cmrow{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+.cmrow button{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);color:var(--warm);font-family:inherit;font-size:12px;padding:7px 16px;border-radius:30px;cursor:pointer}
+.cmrow button:hover{background:rgba(0,138,171,.3)}
 </style></head>
 <body>
 <div id="app">
@@ -776,7 +786,8 @@ body.editing #ovseq3 .futbg *{animation-play-state:paused}
 <div id="subtitle"><div class="zh"></div><div class="en"></div></div>
 <div id="dots"></div>
 <div id="pageno"></div>
-<div id="editbar"><span>✎ 编辑模式：点击任意文字直接修改 · 点击任意图片选择新图替换 · 用底部圆点切换幕</span><button id="btnExport" style="background:#fff;color:#C55A11;border:none;border-radius:20px;padding:5px 16px;cursor:pointer;font-family:inherit">⬇ 导出修改后的文件</button></div>
+<div id="editbar"><span>✎ 编辑模式：点击文字直接修改 · 点击图片换图 · 文字改完点「复制修改」发给Claude保存；图片替换用「导出」</span><button id="btnCopy" style="background:#8FD4E8;color:#0B2447;border:none;border-radius:20px;padding:5px 16px;cursor:pointer;font-family:inherit;font-weight:700">📋 复制修改给Claude</button><button id="btnExport" style="background:#fff;color:#C55A11;border:none;border-radius:20px;padding:5px 16px;cursor:pointer;font-family:inherit">⬇ 导出修改后的文件</button></div>
+<div id="copymodal"><div class="cmbox"><h3>剪贴板不可用——请手动全选复制下面的清单，粘贴到 Claude 对话</h3><textarea readonly></textarea><div class="cmrow"><button id="cmCopy">全选复制</button><button id="cmClose">关闭</button></div></div></div>
 <input type="file" id="imgpick" accept="image/*" hidden>
 <div id="ctrl">
   <button id="btnEdit">✎ 编辑</button>
@@ -1014,6 +1025,49 @@ $('#btnExport').onclick=()=>{
   const bE=$('#btnExport'),t0=bE.textContent; bE.textContent='✓ 已导出到下载'; setTimeout(()=>bE.textContent=t0,2500);
 };
 window.addEventListener('beforeunload',e=>{ if(window._dirty){ e.preventDefault(); e.returnValue='有未导出的编辑修改'; } });
+// ============ 修改采集 · 复制给Claude ============
+const _txtEdits=new Map();
+function _edPath(el){
+  const root=el.closest('.overlay,#subtitle,#infocard');
+  let sig=el.tagName.toLowerCase();
+  const cls=(typeof el.className==='string'?el.className:'').trim();
+  if(cls)sig+='.'+cls.split(/\s+/).join('.');
+  let idx=1;try{const all=[...((root||document).querySelectorAll(sig))];const k=all.indexOf(el);if(k>0)idx=k+1;}catch(e){}
+  return ((root&&root.id)||'页面')+' › '+sig+(idx>1?' 第'+idx+'个':'');
+}
+document.addEventListener('focusin',e=>{
+  const el=e.target;
+  if(editing&&el.isContentEditable&&!_txtEdits.has(el))
+    _txtEdits.set(el,{old:el.innerText,page:cur+1,scene:scenes[cur].name,path:_edPath(el)});
+});
+let _imgEditCount=0;
+new MutationObserver(ms=>{if(!editing)return;
+  ms.forEach(m=>{const t=m.target;
+    if(t.tagName==='IMG'||(t.classList&&(t.classList.contains('bgpic')||t.classList.contains('cleanpic'))))_imgEditCount++;});
+}).observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['src','style']});
+function _buildEditReport(){
+  const rows=[];let n=0;
+  _txtEdits.forEach((v,el)=>{
+    const nw=el.innerText;
+    if(nw.trim()!==v.old.trim()){n++;
+      rows.push(n+'. 第'+v.page+'页「'+v.scene+'」 '+v.path+'\n原文⟪'+v.old+'⟫\n改为⟪'+nw+'⟫');}
+  });
+  if(!rows.length&&!_imgEditCount)return null;
+  let out='【BeyondTheHall 文字修改清单】请Claude将以下修改应用到源文件并归档：\n\n'+rows.join('\n\n');
+  if(_imgEditCount)out+='\n\n⚠ 另检测到 '+_imgEditCount+' 处图片替换——图片无法经剪贴板传回，请另用「⬇ 导出」把文件传给Claude。';
+  return out;
+}
+$('#btnCopy').onclick=()=>{
+  const rpt=_buildEditReport();
+  const bC=$('#btnCopy'),t0='📋 复制修改给Claude';
+  if(!rpt){bC.textContent='没有检测到文字修改';setTimeout(()=>bC.textContent=t0,2200);return;}
+  const showModal=()=>{const m=$('#copymodal');m.querySelector('textarea').value=rpt;m.classList.add('on');m.querySelector('textarea').select();};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(rpt).then(()=>{bC.textContent='✓ 已复制，去粘贴给Claude';setTimeout(()=>bC.textContent=t0,3000);}).catch(showModal);
+  }else showModal();
+};
+$('#cmClose').onclick=()=>$('#copymodal').classList.remove('on');
+$('#cmCopy').onclick=()=>{const ta=$('#copymodal textarea');ta.select();try{document.execCommand('copy');$('#cmCopy').textContent='✓ 已复制';setTimeout(()=>$('#cmCopy').textContent='全选复制',2000);}catch(e){}};
 // ============ 目录导航 ============
 const TOC=[['封面','封面'],['目录','目录'],['序章 · 缘起与平面','序 / 缘起'],['壹 · 入口前厅','第一章'],
  ['贰 · 展厅区域','贰 / 迎宾门开启'],['叁 · 核心会谈','叁 / 多功能会议室'],['附 · 规划与估算','附 / 分区规划一'],['结尾','结尾']];
