@@ -1292,7 +1292,7 @@ $('#btnCopy').onclick=()=>{
 $('#cmClose').onclick=()=>$('#copymodal').classList.remove('on');
 $('#cmCopy').onclick=()=>{const ta=$('#copymodal textarea');ta.select();try{document.execCommand('copy');$('#cmCopy').textContent='✓ 已复制';setTimeout(()=>$('#cmCopy').textContent='全选复制',2000);}catch(e){}};
 // ============ 目录导航 ============
-const TOC=[['封面','封面'],['目录','目录'],['序章 · 缘起与平面','序 / 缘起'],['方案一 总平面','方案一 · 点位索引'],['方案二 平面','方案二 · 总平面'],['壹 · 入口前厅','第一章'],
+const TOC=[['封面','封面'],['目录','目录'],['序章 · 缘起与平面','序 / 缘起'],['方案一 总平面','方案一 · 点位索引'],['方案二 总平面','方案二 · 总平面'],['壹 · 入口前厅','第一章'],
  ['贰 · 展厅区域','贰 / 迎宾门开启'],['叁 · 核心会谈','叁 / 多功能会议室'],['附 · 规划与估算','附 / 分区规划一'],['结尾','结尾']];
 const tocmenu=$('#tocmenu'),tocbtn=$('#tocbtn');
 TOC.forEach(pair=>{
