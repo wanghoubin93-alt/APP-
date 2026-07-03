@@ -1058,11 +1058,11 @@ const scenes=[
   zh:'方案二：另一种功能分区布局，空间更开敞。',en:'SCHEME 2 · MASTERPLAN'},
  {ov:'ovs2flow', name:'方案二 · 访客流线', dur:9000,
   zh:'从过廊到展厅，豁然开朗',en:'SCHEME 2 · VISITOR FLOW'},
- {ov:'ovs2b1', name:'方案二 · B 企业形象一', dur:6000,
+ {ov:'ovs2b1', name:'方案二 · B 企业形象一', dur:6000, mini:[64,66,'s2'],
   zh:'方案二 B区 · 企业形象：前厅茶座与品牌形象墙。',en:'SCHEME 2 · B CORPORATE IMAGE I'},
- {ov:'ovs2b2', name:'方案二 · B 企业形象二', dur:6000,
+ {ov:'ovs2b2', name:'方案二 · B 企业形象二', dur:6000, mini:[64,66,'s2'],
   zh:'方案二 B区 · 企业形象：光廊引导，步入展厅核心。',en:'SCHEME 2 · B CORPORATE IMAGE II'},
- {ov:'ovs2c1', name:'方案二 · C 展厅生态', dur:6000,
+ {ov:'ovs2c1', name:'方案二 · C 展厅生态', dur:6000, mini:[35,55,'s2'],
   zh:'方案二 C区 · 展厅生态：企业概况、全球布局与产品体验。',en:'SCHEME 2 · C ECOSYSTEM HALL'},
  {ov:'ovzone1', name:'附 / 分区规划一', dur:11000,
   zh:'附：分区墙面内容规划——外廊道、前厅、序厅的每一面墙。',en:'CONTENT PLAN · I'},
@@ -1155,7 +1155,7 @@ function go(i){
     d.innerHTML='<b>'+p[2]+'</b><span>'+p[3]+'</span>'; pinbox.appendChild(d); }); }
   $('#phtag').style.display=s.ph?'block':'none';
   const mm=$('#minimap');
-  if(s.mini){mm.classList.add('on');const p=$('#mpin');p.style.left=s.mini[0]+'%';p.style.top=s.mini[1]+'%';}
+  if(s.mini){mm.classList.add('on');const p=$('#mpin');p.style.left=s.mini[0]+'%';p.style.top=s.mini[1]+'%';const mi=mm.querySelector('img');if(!mi.dataset.d1)mi.dataset.d1=mi.src;const s2i=document.querySelector('#ovs2mp .s2wrap img');mi.src=(s.mini[2]==='s2'&&s2i)?s2i.src:mi.dataset.d1;}
   else mm.classList.remove('on');
   $('#scname').textContent=s.name;
   try{history.replaceState(null,'','#p'+(cur+1));}catch(e){}
