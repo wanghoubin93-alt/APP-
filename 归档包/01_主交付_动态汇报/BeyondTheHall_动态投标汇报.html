@@ -1052,7 +1052,7 @@ const scenes=[
  {ov:null, name:'叁 / 小会议室', dur:8000, cls:'haspins', cam:'translate(49%,3%) scale(1.35)', mini:[13,48],
   pins:[[7.7,73.7,'11','小会议室 F · 4–6人'],[8.0,48.5,'12','小会议室 G · 4–6人'],[7.2,21.6,'H','中会议室'],[14.4,19.7,'15','茶水间']],
   zh:'两间小会议室：日常洽谈与项目协作的安静角落。',en:'CH.3 · MEETING ROOMS'},
- {ov:'ovfgrnd', name:'叁 / 小会议效果', dur:6000, mini:[8,45], zh:'',en:''},
+ {ov:'ovfgrnd', name:'叁 / 中会议室', dur:6000, mini:[8,45], nc:'#1B4F9C', zh:'',en:''},
  {ov:'ovmr2', name:'叁 / 小会议效果二', dur:6000, mini:[8,55], zh:'',en:''},
  {ov:'ovs2mp', name:'方案二 · 总平面', dur:9000,
   zh:'方案二：另一种功能分区布局，空间更开敞。',en:'SCHEME 2 · MASTERPLAN'},
@@ -1153,7 +1153,7 @@ function go(i){
   const mm=$('#minimap');
   if(s.mini){mm.classList.add('on');const p=$('#mpin');p.style.left=s.mini[0]+'%';p.style.top=s.mini[1]+'%';const mi=mm.querySelector('img');if(!mi.dataset.d1)mi.dataset.d1=mi.src;const s2i=document.querySelector('#minis2src');mi.src=(s.mini[2]==='s2'&&s2i)?s2i.src:mi.dataset.d1;}
   else mm.classList.remove('on');
-  $('#scname').textContent=s.name;
+  const _sn=$('#scname');_sn.textContent=s.name;_sn.style.color=s.nc||'';
   try{history.replaceState(null,'','#p'+(cur+1));}catch(e){}
   const sub=$('#subtitle');sub.style.display=(s.zh||s.en)?'':'none';
   sub.querySelector('.zh').textContent=s.zh;sub.querySelector('.en').textContent=s.en;
@@ -1299,8 +1299,8 @@ $('#btnCopy').onclick=()=>{
 $('#cmClose').onclick=()=>$('#copymodal').classList.remove('on');
 $('#cmCopy').onclick=()=>{const ta=$('#copymodal textarea');ta.select();try{document.execCommand('copy');$('#cmCopy').textContent='✓ 已复制';setTimeout(()=>$('#cmCopy').textContent='全选复制',2000);}catch(e){}};
 // ============ 目录导航 ============
-const TOC=[['封面','封面'],['目录','目录'],['序章 · 缘起与平面','序 / 缘起'],['方案一 总平面','方案一 · 点位索引'],['方案二 总平面','方案二 · 总平面'],['壹 · 入口前厅','第一章'],
- ['贰 · 展厅区域','贰 / 迎宾门开启'],['叁 · 核心会谈','叁 / 多功能会议室'],['附 · 规划与估算','附 / 分区规划一'],['结尾','结尾']];
+const TOC=[['封面','封面'],['目录','目录'],['序章 · 缘起与平面','序 / 缘起'],['方案一 总平面','方案一 · 点位索引'],['壹 · 入口前厅','第一章'],
+ ['贰 · 展厅区域','贰 / 迎宾门开启'],['叁 · 核心会谈','叁 / 多功能会议室'],['方案二 总平面','方案二 · 总平面'],['附 · 时间与估算','附 / 时间计划'],['结尾','结尾']];
 const tocmenu=$('#tocmenu'),tocbtn=$('#tocbtn');
 TOC.forEach(pair=>{
   const idx=scenes.findIndex(s=>s.name===pair[1]);
