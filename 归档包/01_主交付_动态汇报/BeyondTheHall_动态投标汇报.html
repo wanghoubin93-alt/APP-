@@ -160,6 +160,7 @@ h1.mid{font-size:clamp(20px,2.6vw,34px);font-weight:400;letter-spacing:.1em}
 @keyframes ping{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.4);opacity:0}}
 #pins{position:absolute;inset:0;pointer-events:none}
 .ppin{position:absolute;transform:translate(-8px,-9px);opacity:0;display:flex;align-items:center;gap:4px}
+.ppin.lft{flex-direction:row-reverse;transform:translate(calc(-100% + 9px),-9px)}
 .haspins .ppin{animation:pop .5s forwards;animation-delay:calc(.6s + var(--i)*.75s)}
 .ppin b{position:relative;min-width:17px;height:17px;border-radius:50%;background:#1B4F9C;color:#fff;font-size:9.5px;font-weight:700;
   display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2.5px #fff,0 2px 6px rgba(0,0,0,.35)}
@@ -912,8 +913,8 @@ const scenes=[
   zh:'同一个平面，多种布置，满足不同空间功能需求',en:'ONE PLAN · MULTI-MODES'},
  {ov:'ovch1', name:'第一章', dur:5500,
   zh:'',en:''},
- {ov:null, name:'壹 / 入口前厅', dur:10000, cls:'haspins', cam:'translate(-71%,-5%) scale(1.9)', mini:[87,53],
-  pins:[[86.3,27.3,'1','展厅大门'],[90.4,55.6,'2','接待前台'],[94.5,48.5,'3','公司Logo背景墙'],[88.9,91.5,'4','景观落地窗'],[80.2,68.7,'5','洽谈茶座']],
+ {ov:null, name:'壹 / 入口前厅', dur:10000, cls:'haspins', cam:'translate(-63%,-15%) scale(1.65)', mini:[87,53],
+  pins:[[86.3,27.3,'1','展厅大门'],[90.4,55.6,'2','接待前台'],[94.5,48.5,'3','公司Logo背景墙','L'],[88.9,91.5,'4','景观落地窗'],[80.2,68.7,'5','洽谈茶座']],
   zh:'第一章，入口前厅：博彦科技第一印象',en:'CH.1 · ENTRANCE & RECEPTION'},
  {ov:'ov10', name:'壹 / 前厅效果', dur:8000,  mini:[87,53],
   zh:'企业形象与城市景观在此相融——窗，是前厅的第一件展品。',en:'RECEPTION · THE VIEW'},
@@ -1037,6 +1038,7 @@ function go(i){
   const pinbox=$('#pins'); pinbox.innerHTML='';
   if(s.pins){ s.pins.forEach((p,ix)=>{ const d=document.createElement('div'); d.className='ppin';
     d.style.left=p[0]+'%'; d.style.top=p[1]+'%'; d.style.setProperty('--i',ix);
+    if(p[4]==='L')d.classList.add('lft');
     d.innerHTML='<b>'+p[2]+'</b><span>'+p[3]+'</span>'; pinbox.appendChild(d); }); }
   $('#phtag').style.display=s.ph?'block':'none';
   const mm=$('#minimap');
