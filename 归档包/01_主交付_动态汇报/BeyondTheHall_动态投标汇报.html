@@ -461,6 +461,31 @@ body.editing #ovseq3 .futbg *{animation-play-state:paused}
 #ovs2mp .s2leg div{display:flex;flex-wrap:wrap;justify-content:center;gap:3px 13px}
 #ovs2mp .s2leg span{font-size:clamp(8.5px,.8vw,12px);color:#BFCFE8;letter-spacing:.04em;white-space:nowrap}
 #ovs2mp .s2leg b{color:#F0B27A;font-weight:700;margin-right:2px}
+
+/* 投资估算表 */
+.ivwrap{display:flex;gap:36px;margin-top:26px;align-items:stretch}
+.ivlist{flex:1.55;min-width:0}
+.ivhead{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
+  letter-spacing:.22em;padding-bottom:8px;border-bottom:1px solid rgba(0,138,171,.4)}
+.ivrow{display:flex;align-items:center;gap:14px;padding:8px 0;
+  border-bottom:1px solid rgba(143,165,200,.14);font-size:14.5px}
+.ivrow .no{width:20px;color:var(--dim);font-size:11px}
+.ivrow .nm{width:104px;letter-spacing:.08em}
+.ivrow .bar{flex:1;height:6px;background:rgba(143,165,200,.13);border-radius:3px;overflow:hidden}
+.ivrow .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--logo),var(--sky));border-radius:3px}
+.ivrow .val{width:78px;text-align:right;font-variant-numeric:tabular-nums;color:#DCE7F8}
+.ivsub{font-size:11px;color:var(--dim);padding:3px 92px 8px 34px;letter-spacing:.04em;
+  border-bottom:1px solid rgba(143,165,200,.14)}
+.ivsum{flex:1;border:1px solid rgba(0,138,171,.35);padding:24px 26px;background:rgba(9,26,53,.55);
+  display:flex;flex-direction:column;justify-content:center;gap:12px}
+.ivsum .srow{display:flex;align-items:baseline;gap:10px;font-size:13.5px;color:#BCD0F2}
+.ivsum .srow b{font-weight:400;color:var(--dim);font-size:11px;width:12px}
+.ivsum .srow .sv{margin-left:auto;font-variant-numeric:tabular-nums;color:#DCE7F8}
+.ivsum .stot{border-top:1px solid rgba(0,138,171,.4);margin-top:8px;padding-top:16px;
+  display:flex;justify-content:space-between;align-items:center}
+.ivsum .stot small{color:var(--dim);letter-spacing:.12em}
+.ivsum .stot .amt2{font-size:30px;color:#fff;font-variant-numeric:tabular-nums;
+  text-shadow:0 0 18px rgba(0,138,171,.45)}
 </style></head>
 <body>
 <div id="app">
@@ -939,14 +964,21 @@ body.editing #ovseq3 .futbg *{animation-play-state:paused}
 </div></div>
 
 <div class="overlay" id="ovinvest"><div class="ovin">
-  <div class="eyebrow rise">附 · 投资估算</div>
-  <h1 class="mid rise">分档报价 · 全部含税</h1>
-  <div class="invest rise-t">
-    <div class="icol"><h3>Tier A · 功能档</h3><div class="amt">利旧为主</div><p>沿用现有LED/拼屏/一体机，基础智能化；满足完整功能与叙事，投入最优。</p></div>
-    <div class="icol hi"><h3>Tier B · 进阶档</h3><div class="amt">推荐</div><p>信任前厅+沉浸展区混合；时间长廊投影、AI数字人、BYOS自证空间接入。</p></div>
-    <div class="icol"><h3>Tier C · 旗舰档</h3><div class="amt">可选升级</div><p>D区沉浸式行业场景、环幕/互动投影等新装置，视预算确认。</p></div>
+  <div class="eyebrow rise">附 · 投资估算 · 2026-07-03 · 480㎡</div>
+  <h1 class="mid rise">装修工程估算 · 全清单可核对</h1>
+  <div class="ivwrap rise-t">
+    <div class="ivlist">
+      <div class="ivhead"><span>分项</span><span>金额 · 万元</span></div>
+      <div class="ivrow"><span class="no">1</span><span class="nm">拆除工程</span><span class="bar"><i style="width:4%"></i></span><span class="val">3.17</span></div><div class="ivrow"><span class="no">2</span><span class="nm">装饰工程</span><span class="bar"><i style="width:100%"></i></span><span class="val">71.46</span></div><div class="ivsub">天花 16.2 · 隔墙 10.8 · 墙面 13.1 · 地面 19.0 · 门窗 7.2 · 固定家具 5.1</div><div class="ivrow"><span class="no">3</span><span class="nm">强电工程</span><span class="bar"><i style="width:22%"></i></span><span class="val">15.41</span></div><div class="ivrow"><span class="no">4</span><span class="nm">弱电工程</span><span class="bar"><i style="width:20%"></i></span><span class="val">14.39</span></div><div class="ivrow"><span class="no">5</span><span class="nm">空调工程</span><span class="bar"><i style="width:6%"></i></span><span class="val">4.61</span></div><div class="ivrow"><span class="no">6</span><span class="nm">消防工程</span><span class="bar"><i style="width:7%"></i></span><span class="val">4.90</span></div><div class="ivrow"><span class="no">7</span><span class="nm">措施费</span><span class="bar"><i style="width:4%"></i></span><span class="val">2.74</span></div>
+    </div>
+    <div class="ivsum">
+      <div class="srow"><b>a</b><span>直接费合计</span><span class="sv">116.67</span></div>
+      <div class="srow"><b>b</b><span>施工管理费 10%</span><span class="sv">11.67</span></div>
+      <div class="srow"><b>c</b><span>税金 9%</span><span class="sv">11.55</span></div>
+      <div class="stot"><span>装修工程合计<br><small>a + b + c · 万元</small></span><span class="amt2">139.89</span></div>
+    </div>
   </div>
-  <div class="znote rise-t" style="margin-top:22px">★ 两项前置确认：预算区间 · 最终用户使用需求（接待频次/最大规模/会议室使用习惯）</div>
+  <div class="znote rise-t" style="margin-top:20px">报价说明：含开荒保洁与物业管理费；不含报审报验手续及费用、精细保洁、空气治理与检测、绿植及物业其他收费（如产生据实另计）。</div>
 </div></div>
 
 <div class="overlay" id="ovvideo" style="background:#000">
@@ -1067,7 +1099,7 @@ const scenes=[
  {ov:'ovtime', name:'附 / 时间计划', dur:9000,
   zh:'实施时间计划：设计、定稿、施工、交付——分段推进，办公不中断。',en:'SCHEDULE'},
  {ov:'ovinvest', name:'附 / 投资估算', dur:10000,
-  zh:'投资估算分三档、全部含税；预算与使用需求，动工前先向您确认。',en:'INVESTMENT'},
+  zh:'装修工程估算一百三十九点九万元——直接费、管理费、税金逐项列明，全套工程量清单可核对。',en:'INVESTMENT · RMB 1.40M ALL-IN'},
  {ov:'ov22', name:'结尾', dur:7500,
   zh:'这就是建成后的博彦展厅——期待与您在真实的大厅里再会。',en:'SEE YOU IN THE REAL HALL'}
 ];
