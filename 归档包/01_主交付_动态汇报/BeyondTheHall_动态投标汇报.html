@@ -379,6 +379,14 @@ body.editing #ovseq3 .futbg *{animation-play-state:paused}
 #ovstar.on .eye{animation:eyep 4.5s ease-in-out infinite}
 @keyframes eyep{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.9}50%{transform:translate(-50%,-50%) scale(1.08);opacity:1}}
 #ovstar .ovin{z-index:2}
+
+/* 滚动数字 odometer (智慧之眼) */
+#ovstar .stat b{font-variant-numeric:tabular-nums}
+#ovstar .reel,#ovstar .rcol,#ovstar .rstrip{font-size:1em;letter-spacing:0}
+#ovstar .reel{display:inline-flex;vertical-align:bottom}
+#ovstar .rcol{height:1em;overflow:hidden;display:inline-block}
+#ovstar .rstrip{display:flex;flex-direction:column;transform:translateY(0)}
+#ovstar .rstrip i{height:1em;line-height:1;font-style:normal;display:block;text-align:center}
 </style></head>
 <body>
 <div id="app">
@@ -898,7 +906,7 @@ const scenes=[
  {ov:null, name:'贰 / 迎宾门开启', dur:11000, cls:'haspins sdoor', cam:'translate(-30%,-9%) scale(1.9)', mini:[66,55],
   pins:[[77.1,50.5,'7','展厅迎宾门 · 电动开启'],[63.3,40.4,'6','217寸星图大屏'],[69.5,79.8,'8','三十年发展时间轴']],
   zh:'二百一十七寸星图大屏，震撼的科技迎宾，三十年时间轴静静展开。',en:'CH.2 · ABOUT BEYOND'},
- {ov:'ovstar', name:'贰 / 智慧之眼', dur:9500, count:true,
+ {ov:'ovstar', name:'贰 / 智慧之眼', dur:9500, roll:true,
   zh:'智慧之眼——217寸星图大屏序厅：23城、13国、80+交付中心星点化，汇成数智之眼，2000+专利如星轨流动。',en:'CH.2 · THE EYE OF DATA'},
  {ov:'ovstarpic', name:'贰 / 智慧之眼效果', dur:6000},
  {ov:'ov16', name:'贰 / 用数字说话', dur:8500, count:true, mini:[60,45],
@@ -956,6 +964,29 @@ function countUp(ov){
       if(p<1)requestAnimationFrame(step);}
     requestAnimationFrame(step);});
 }
+function rollNums(ov){
+  document.querySelectorAll('#'+ov+' b[data-count]').forEach((b,bi)=>{
+    if(b._rolled)return; b._rolled=true;
+    const target=String(+b.dataset.count);
+    const em=b.querySelector('em'); const suffix=em?em.outerHTML:'';
+    const reel=document.createElement('span'); reel.className='reel';
+    const strips=[];
+    for(const ch of target){
+      const col=document.createElement('span'); col.className='rcol';
+      const strip=document.createElement('span'); strip.className='rstrip';
+      const d=+ch; let html='';
+      for(let l=0;l<2;l++)for(let k=0;k<10;k++)html+='<i>'+k+'</i>';
+      for(let k=0;k<=d;k++)html+='<i>'+k+'</i>';
+      strip.innerHTML=html; col.appendChild(strip); reel.appendChild(col);
+      strips.push({strip,d});
+    }
+    b.innerHTML=''; b.appendChild(reel); if(suffix)b.insertAdjacentHTML('beforeend',suffix);
+    requestAnimationFrame(()=>{ strips.forEach((s,i)=>{
+      s.strip.style.transition='transform 1.6s cubic-bezier(.15,.7,.15,1) '+(bi*0.14+i*0.09).toFixed(2)+'s';
+      s.strip.style.transform='translateY(-'+(20+s.d)+'em)';
+    });});
+  });
+}
 function setInfo(s){
   if(s.info){
     info.querySelector('h3').textContent=s.info.t;
@@ -972,7 +1003,8 @@ function go(i){
   document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('on'));
   planwrap.className=''; void planwrap.offsetWidth;
   if(s.ov){ $('#'+s.ov).classList.add('on'); planwrap.style.opacity=0;
-    if(s.count)setTimeout(()=>countUp(s.ov),500); }
+    if(s.count)setTimeout(()=>countUp(s.ov),500);
+    if(s.roll)setTimeout(()=>rollNums(s.ov),450); }
   else{
     planwrap.style.opacity=1;
     (s.cls||'').split(' ').forEach(c=>{if(c)planwrap.classList.add(c);});
