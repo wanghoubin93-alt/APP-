@@ -387,6 +387,31 @@ body.editing #ovseq3 .futbg *{animation-play-state:paused}
 #ovstar .rcol{height:1em;overflow:hidden;display:inline-block}
 #ovstar .rstrip{display:flex;flex-direction:column;transform:translateY(0)}
 #ovstar .rstrip i{height:1em;line-height:1;font-style:normal;display:block;text-align:center}
+
+/* 三合一整体理念 (ovseq2) */
+#ovseq2 .ovin{max-width:1180px;width:92vw}
+#ovseq2 h1.mid{font-size:clamp(18px,2.3vw,30px)}
+.triad{display:flex;justify-content:center;align-items:center;gap:0;margin-top:3.2vh}
+.tcirc{width:clamp(120px,15vw,190px);aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;border:2px solid;backdrop-filter:blur(2px)}
+.tcirc+.tcirc{margin-left:clamp(-16px,-0.9vw,-10px)}
+.tcirc b{display:block;font-size:clamp(16px,1.7vw,25px);font-weight:700;color:#fff;letter-spacing:.05em}
+.tcirc span{font-size:clamp(8px,.72vw,11px);letter-spacing:.18em;margin-top:6px}
+.tcirc.c1{border-color:#3E7BD0;background:radial-gradient(circle,rgba(27,79,156,.42),rgba(27,79,156,.10) 70%);z-index:3}
+.tcirc.c2{border-color:#12A6C4;background:radial-gradient(circle,rgba(0,138,171,.38),rgba(0,138,171,.08) 70%);z-index:2}
+.tcirc.c3{border-color:var(--amber);background:radial-gradient(circle,rgba(150,160,180,.28),rgba(80,90,110,.10) 70%);z-index:1}
+.tcirc.c1 span{color:#9DC0EF}.tcirc.c2 span{color:#8FD9E8}.tcirc.c3 span{color:#E6B98A}
+.triadarc{width:min(560px,60vw);height:46px;margin-top:6px}
+.triadarc path{fill:none;stroke:var(--sky);stroke-width:1.6;stroke-dasharray:5 5;opacity:.6}
+.triadpill{margin-top:10px;border:1px solid rgba(0,138,171,.55);border-radius:40px;
+  padding:11px 30px;font-size:clamp(13px,1.4vw,19px);color:#CFE1F5;letter-spacing:.08em;
+  background:rgba(0,138,171,.08)}
+.triadcards{display:flex;gap:18px;margin-top:3vh;width:100%;justify-content:center}
+.triadcards .tcard{flex:1 1 0;max-width:340px;text-align:left;border-radius:12px;padding:16px 18px;
+  background:rgba(255,255,255,.045);border:1px solid rgba(150,175,220,.28)}
+.triadcards .tcard h4{font-size:clamp(12px,1.15vw,15px);margin-bottom:7px;letter-spacing:.05em}
+.triadcards .tcard.k1 h4{color:#7FB2F0}.triadcards .tcard.k2 h4{color:#6FD3E8}.triadcards .tcard.k3 h4{color:var(--amber)}
+.triadcards .tcard p{font-size:clamp(10px,.86vw,12.5px);line-height:1.6;color:#B8C8E2}
 </style></head>
 <body>
 <div id="app">
@@ -449,8 +474,19 @@ body.editing #ovseq3 .futbg *{animation-play-state:paused}
   <div class="concbg" aria-hidden="true"><svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"><circle class="st" cx="525.2" cy="146.7" r="1.5" fill="#BFD8F5" style="--d:2.9s;--dl:-2.8s"/><circle class="st" cx="590.5" cy="68.7" r="1.3" fill="#BFD8F5" style="--d:2.7s;--dl:-3.4s"/><circle class="st" cx="129.0" cy="96.2" r="1.2" fill="#BFD8F5" style="--d:5.8s;--dl:-5.3s"/><circle class="st" cx="368.3" cy="547.0" r="1.8" fill="#BFD8F5" style="--d:4.9s;--dl:-3.6s"/><circle class="st" cx="1543.0" cy="59.1" r="1.7" fill="#BFD8F5" style="--d:3.7s;--dl:-5.1s"/><circle class="st" cx="203.8" cy="279.1" r="1.7" fill="#BFD8F5" style="--d:3.3s;--dl:-2.5s"/><circle class="st" cx="1016.7" cy="332.8" r="1.4" fill="#BFD8F5" style="--d:2.8s;--dl:-5.6s"/><circle class="st" cx="341.3" cy="591.5" r="1.2" fill="#BFD8F5" style="--d:3.8s;--dl:-2.5s"/><circle class="st" cx="727.0" cy="271.8" r="1.7" fill="#BFD8F5" style="--d:5.3s;--dl:-4.5s"/><circle class="st" cx="916.1" cy="461.2" r="1.8" fill="#BFD8F5" style="--d:5.4s;--dl:-4.3s"/><circle class="st" cx="1549.1" cy="119.2" r="1.2" fill="#BFD8F5" style="--d:5.6s;--dl:-5.1s"/><circle class="st" cx="782.8" cy="52.9" r="1.5" fill="#BFD8F5" style="--d:5.6s;--dl:-2.6s"/><circle class="st" cx="1385.7" cy="283.5" r="1.5" fill="#BFD8F5" style="--d:4.9s;--dl:-2.5s"/><circle class="st" cx="731.7" cy="725.6" r="1.8" fill="#BFD8F5" style="--d:4.4s;--dl:-2.0s"/><circle class="st" cx="114.6" cy="609.3" r="1.5" fill="#BFD8F5" style="--d:6.5s;--dl:-1.1s"/><circle class="st" cx="464.0" cy="344.1" r="1.5" fill="#BFD8F5" style="--d:2.7s;--dl:-3.2s"/><circle class="st" cx="282.2" cy="118.4" r="0.8" fill="#BFD8F5" style="--d:5.6s;--dl:-5.2s"/><circle class="st" cx="406.3" cy="348.4" r="1.7" fill="#BFD8F5" style="--d:2.9s;--dl:-3.3s"/><circle class="st" cx="877.1" cy="762.0" r="1.7" fill="#BFD8F5" style="--d:6.0s;--dl:-4.3s"/><circle class="st" cx="667.9" cy="321.4" r="1.8" fill="#BFD8F5" style="--d:6.3s;--dl:-5.1s"/><circle class="st" cx="294.9" cy="214.8" r="1.0" fill="#BFD8F5" style="--d:4.5s;--dl:-2.5s"/><circle class="st" cx="429.9" cy="23.4" r="1.2" fill="#BFD8F5" style="--d:4.0s;--dl:-2.6s"/><circle class="st" cx="1506.8" cy="600.0" r="1.3" fill="#BFD8F5" style="--d:5.0s;--dl:-1.9s"/><circle class="st" cx="104.2" cy="775.6" r="1.6" fill="#BFD8F5" style="--d:6.0s;--dl:-1.2s"/><circle class="st" cx="632.1" cy="355.1" r="0.8" fill="#BFD8F5" style="--d:5.1s;--dl:-5.6s"/><circle class="st" cx="125.1" cy="195.4" r="0.9" fill="#BFD8F5" style="--d:3.9s;--dl:-5.7s"/><circle class="st" cx="20.4" cy="147.1" r="0.8" fill="#BFD8F5" style="--d:4.0s;--dl:-5.8s"/><circle class="st" cx="1384.0" cy="535.8" r="0.9" fill="#BFD8F5" style="--d:3.6s;--dl:-3.9s"/><circle class="st" cx="588.1" cy="123.2" r="1.7" fill="#BFD8F5" style="--d:6.5s;--dl:-3.2s"/><circle class="st" cx="774.8" cy="92.1" r="0.8" fill="#BFD8F5" style="--d:3.9s;--dl:-4.4s"/><circle class="st" cx="1313.0" cy="155.6" r="0.7" fill="#BFD8F5" style="--d:6.3s;--dl:-2.8s"/><circle class="st" cx="248.7" cy="476.3" r="0.7" fill="#BFD8F5" style="--d:4.7s;--dl:-0.1s"/><circle class="st" cx="1366.8" cy="604.8" r="1.0" fill="#BFD8F5" style="--d:4.0s;--dl:-5.0s"/><circle class="st" cx="1224.2" cy="467.4" r="1.6" fill="#BFD8F5" style="--d:3.9s;--dl:-4.7s"/><circle class="st" cx="1286.0" cy="847.3" r="1.7" fill="#BFD8F5" style="--d:5.7s;--dl:-1.1s"/><circle class="st" cx="1174.2" cy="210.5" r="1.3" fill="#BFD8F5" style="--d:4.0s;--dl:-5.8s"/><circle class="st" cx="63.6" cy="254.7" r="1.0" fill="#BFD8F5" style="--d:5.3s;--dl:-0.3s"/><circle class="st" cx="717.7" cy="807.1" r="1.9" fill="#BFD8F5" style="--d:6.3s;--dl:-3.8s"/><circle class="st" cx="363.9" cy="210.6" r="0.9" fill="#BFD8F5" style="--d:3.4s;--dl:-2.3s"/><circle class="st" cx="1424.5" cy="726.0" r="1.3" fill="#BFD8F5" style="--d:5.1s;--dl:-1.2s"/><circle class="st" cx="152.3" cy="574.9" r="1.8" fill="#BFD8F5" style="--d:5.7s;--dl:-1.5s"/><circle class="st" cx="765.7" cy="170.0" r="1.6" fill="#BFD8F5" style="--d:3.9s;--dl:-1.2s"/><path class="dline" d="M-60,235 C 420,175 920,300 1700,215" fill="none" stroke="#008AAB" stroke-width="1.4" opacity=".32" style="--d:8s;--dl:0s"/><path d="M-60,235 C 420,175 920,300 1700,215" fill="none" stroke="#008AAB" stroke-width=".6" opacity=".10"/><path class="dline" d="M-60,520 C 520,465 1020,595 1700,495" fill="none" stroke="#008AAB" stroke-width="1.4" opacity=".32" style="--d:11s;--dl:-4s"/><path d="M-60,520 C 520,465 1020,595 1700,495" fill="none" stroke="#008AAB" stroke-width=".6" opacity=".10"/><path class="dline" d="M-60,705 C 460,660 960,765 1700,685" fill="none" stroke="#008AAB" stroke-width="1.4" opacity=".32" style="--d:9.5s;--dl:-7s"/><path d="M-60,705 C 460,660 960,765 1700,685" fill="none" stroke="#008AAB" stroke-width=".6" opacity=".10"/><g class="leafw" style="--d:30s;--dl:0s" transform="translate(1700,90)"><g class="leafs"><path d="M0,0 Q10,-13 22,0 Q10,13 0,0 M3,0 L19,0" transform="scale(1.5)" fill="#5E9E7E" stroke="#5E9E7E" stroke-width=".8" opacity=".34"/></g></g><g class="leafw" style="--d:38s;--dl:-12s" transform="translate(2050,210)"><g class="leafs"><path d="M0,0 Q10,-13 22,0 Q10,13 0,0 M3,0 L19,0" transform="scale(1.1)" fill="#6FAF8C" stroke="#6FAF8C" stroke-width=".8" opacity=".34"/></g></g><g class="leafw" style="--d:26s;--dl:-19s" transform="translate(1800,320)"><g class="leafs"><path d="M0,0 Q10,-13 22,0 Q10,13 0,0 M3,0 L19,0" transform="scale(1.9)" fill="#5E9E7E" stroke="#5E9E7E" stroke-width=".8" opacity=".34"/></g></g><g class="leafw" style="--d:34s;--dl:-27s" transform="translate(2250,150)"><g class="leafs"><path d="M0,0 Q10,-13 22,0 Q10,13 0,0 M3,0 L19,0" transform="scale(1.3)" fill="#6FAF8C" stroke="#6FAF8C" stroke-width=".8" opacity=".34"/></g></g></svg></div>
 <div class="ovin">
   <div class="eyebrow rise">序 · 理念</div>
-  <h1 class="big rise"><b>自然 · 科技 · 信任</b></h1>
-  <div class="sub2 rise">延续"超越期待，尽善尽美"的企业精神，我们以三条线索构建这座展厅，<br>自然的融合让空间有温度，科技的灵活让展示可生长，星空蓝的贯穿让信任一眼可见。</div>
+  <h1 class="mid rise"><b>三合一整体理念</b> · 一个空间，一次完整的信任旅程</h1>
+  <div class="triad rise">
+    <div class="tcirc c1"><b>信任之厅</b><span>THE TRUST HALL</span></div>
+    <div class="tcirc c2"><b>数智共生</b><span>BEYONDVERSE</span></div>
+    <div class="tcirc c3"><b>流动的智库</b><span>LIVING INTELLIGENCE</span></div>
+  </div>
+  <svg class="triadarc rise" viewBox="0 0 560 46" preserveAspectRatio="none" aria-hidden="true"><path d="M40,2 C160,60 400,60 520,2"/></svg>
+  <div class="triadpill rise">前厅立信任之形 · 展厅显数智之实 · 空间成流动之库</div>
+  <div class="triadcards rise">
+    <div class="tcard k1"><h4>前厅 · 信任之厅</h4><p>进入空间的第一印象：石材 × 金属 × 背光 Logo 墙，克制的高级感，为政企 / 金融 / 能源来访建立企业整体视觉形象。</p></div>
+    <div class="tcard k2"><h4>展厅 · 数智共生</h4><p>结合企业核心技术：217&quot; 数智之眼、五联屏业务生态、AI 生命周期长墙，让参访者获得沉浸式智能化体验。</p></div>
+    <div class="tcard k3"><h4>贯穿 · 流动的智库</h4><p>可分可合的模块化空间与可持续更新的内容系统，展厅随业务生长——三十年叙事，永远留有下一页。</p></div>
+  </div>
 </div></div>
 
 <div class="overlay" id="ovseq3">
@@ -867,7 +903,7 @@ const scenes=[
  {ov:'ovseq1', name:'序 / 缘起', dur:7500,
   zh:'博彦科技三十年，一步一步地走来',en:'PROLOGUE · ORIGIN'},
  {ov:'ovseq2', name:'序 / 理念', dur:7500,
-  zh:'自然、科技、信任——三条线索，构建这座展厅。',en:'PROLOGUE · CONCEPT'},
+  zh:'三合一整体理念——前厅立信任之形，展厅显数智之实，空间成流动之库。',en:'ONE SPACE · ONE TRUST JOURNEY'},
  {ov:'ovseq3', name:'序 / 入厅', dur:7000,
   zh:'请以访客的第一视角，沿着一条蓝色的动线，走进博彦的下一个三十年。',en:'PROLOGUE · ENTER'},
  {ov:'ovplannow', name:'序 / 现状平面', dur:9000,
