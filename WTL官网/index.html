@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="./cases.js?v=8"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&amp;family=Archivo+Narrow:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+#wtl-edit-btn,#wtl-save-btn,#wtl-txbar{display:none!important}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:"Noto Sans SC","Archivo",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+::selection{background:#102B98;color:#fff}
+@keyframes wtlrise{from{transform:translateY(108%)}to{transform:none}}
+@keyframes wtlbob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@keyframes wtlscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}[data-rise]{transform:none!important}}
+/* ===== 精致章节页眉：竖排左对齐 ===== */
+[data-sechead]{flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;gap:clamp(14px,1.8vw,20px)!important;}
+[data-sechead]>span:first-child{font-size:11px!important;letter-spacing:.26em!important;}
+[data-sechead] [data-sh]{text-align:left!important;min-width:0!important;font-size:clamp(32px,5vw,60px)!important;line-height:1!important;}
+[data-sechead] [data-sh]>span{margin-top:14px!important;font-size:15px!important;letter-spacing:.02em!important;}
+/* ===== 案例分类标签：单行横向滚动，吸顶固定 ===== */
+[data-cattabs]{scrollbar-width:none;-ms-overflow-style:none;}
+[data-cattabs]::-webkit-scrollbar{display:none}
+[data-cattabs]>button{flex:0 0 auto}
+[data-anim]:hover{animation-play-state:paused}
+/* ===== 移动端自适应 ===== */
+@media(max-width:760px){
+  [data-navlinks]{display:none!important}
+  [data-m="1"]{grid-template-columns:1fr!important}
+  [data-m="2"]{grid-template-columns:repeat(2,1fr)!important}
+  [data-sh]{text-align:left!important;font-size:clamp(30px,8.5vw,48px)!important;min-width:100%!important;margin-top:14px!important}
+  [data-cattabs]{gap:8px!important;padding:10px 0 12px!important;top:50px!important;justify-content:center!important}
+  [data-cattabs]>button{padding:7px 16px!important;font-size:12.5px!important;gap:0!important;border-radius:30px!important}
+  [data-cattabs]>button span{display:none!important}
+}
+@media(max-width:460px){
+  [data-cases]{grid-template-columns:1fr!important}
+}
+</style>
+</helmet>
+
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" fill="#F2F0EA"/>
+  <text x="50" y="44" font-family="Arial Narrow, Arial, sans-serif" font-weight="800" font-size="17" fill="#16140F" text-anchor="middle">WTL</text>
+  <rect x="34" y="54" width="32" height="2" fill="#B96F3C"/>
+  <text x="50" y="68" font-family="ui-monospace, monospace" font-size="6" letter-spacing="2" fill="#54514A" text-anchor="middle">WAY TO LIFE</text>
+</svg>
+</template>
+
+<div ref="{{ rootRef }}" style="position:relative;overflow-x:clip;--paper:#FFFFFF;--ink:#141414;--ink2:#555555;--line:#E4E4E7;--accent:#102B98;--accent-d:#0B1F6E;--dark:#141414;--paper-d:#1a1a1a;background:var(--paper);color:var(--ink);">
+
+  <div data-prog="" style="position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:200;"></div>
+
+  <x-import component-from-global-scope="image-slot" from="./image-slot.js" hint-size="1px,1px" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;"></x-import>
+
+  <!-- NAV -->
+  <nav data-nav="" style="position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(20px,5vw,64px);background:rgba(242,240,234,.82);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s,padding .3s;">
+    <a href="#top" style="display:block;"><img src="images/logo-full.png" alt="WTL · Way to Life Design" style="height:20px;width:auto;display:block;"></a>
+    <div data-navlinks="" style="display:flex;gap:clamp(16px,2.4vw,28px);">
+      <a href="#about" style="font-size:11px;letter-spacing:.18em;color:var(--ink);text-decoration:none;text-transform:uppercase;transition:color .2s;" style-hover="color:var(--accent)">关于 About</a>
+      <a href="#epco" style="font-size:11px;letter-spacing:.18em;color:var(--ink);text-decoration:none;text-transform:uppercase;transition:color .2s;" style-hover="color:var(--accent)">能力 EPCO</a>
+      <a href="#cases" style="font-size:11px;letter-spacing:.18em;color:var(--ink);text-decoration:none;text-transform:uppercase;transition:color .2s;" style-hover="color:var(--accent)">案例 Work</a>
+      <a href="#future" style="font-size:11px;letter-spacing:.18em;color:var(--ink);text-decoration:none;text-transform:uppercase;transition:color .2s;" style-hover="color:var(--accent)">未来 Next</a>
+      <a href="#contact" style="font-size:11px;letter-spacing:.18em;color:var(--ink);text-decoration:none;text-transform:uppercase;transition:color .2s;" style-hover="color:var(--accent)">联系 Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="top" data-screen-label="Hero" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px clamp(20px,5vw,64px);position:relative;">
+    <h1 style="margin:0;overflow:hidden;line-height:0;"><img data-rise="" src="images/logo-full.png" alt="WTL · Way to Life Design" style="display:block;width:min(820px,90vw);height:auto;transform:translateY(108%);animation:wtlrise 1s cubic-bezier(.2,.8,.2,1) forwards;"></h1>
+    <span style="display:inline-block;margin-top:34px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.28em;color:var(--ink2);text-transform:uppercase;">Est. 1999 · Beijing</span>
+    <div data-rise="" style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;color:var(--ink2);text-transform:uppercase;display:flex;align-items:center;gap:10px;">Scroll <span style="width:30px;height:30px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;animation:wtlbob 2s ease-in-out infinite;">↓</span></div>
+  </header>
+
+  <!-- 01 公司简介 (full page) -->
+  <section id="about" data-screen-label="About" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:clamp(110px,13vh,170px) clamp(20px,5vw,64px) clamp(60px,8vh,100px);">
+    <div data-sechead="" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px;flex-wrap:wrap;">
+      <span style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;color:var(--ink2);text-transform:uppercase;display:flex;align-items:center;gap:10px;"><b style="color:var(--accent);font-weight:700;">01</b> Who we are</span>
+      <h2 data-sh="" style="font-family:'Archivo Narrow','Arial Narrow',Arial,sans-serif;font-weight:700;text-transform:uppercase;line-height:.9;font-size:clamp(30px,5vw,62px);text-align:right;">公司简介<span style="display:block;font-size:.34em;letter-spacing:.1em;color:var(--ink2);font-weight:600;margin-top:10px;">不止是设计公司，是把图变成现场的人</span></h2>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(40px,6vh,80px) 0;">
+      <div data-m="1" style="display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,72px);align-items:stretch;">
+        <div data-reveal="" style="display:flex;flex-direction:column;justify-content:space-between;gap:clamp(26px,4vh,44px);">
+          <p style="font-size:clamp(23px,2.7vw,40px);line-height:1.38;font-weight:600;max-width:22ch;">成立于 1999 年，以<b style="color:var(--accent);font-weight:800;">设计与工程一体化</b>为核心，成长为中国最具代表性的高端建筑设计公司之一。</p>
+          <div>
+          <p style="font-size:clamp(15px,1.15vw,17px);line-height:1.9;color:var(--ink2);">凭借在创新办公空间设计方面的专业能力，WTL DESIGN 迅速在建筑界崭露头角。自 2005 年起，业务范围拓展至商业设计、私人住宅、景观设计与产业园区规划。</p>
+          <p style="font-size:clamp(15px,1.15vw,17px);line-height:1.9;color:var(--ink2);margin-top:16px;">如今，我们已在建筑、室内设计及商业领域斩获众多权威奖项，并为全球 70+ 知名品牌担任合作伙伴与顾问。</p>
+          <p data-en="" style="font-size:12.5px;line-height:1.85;color:var(--ink2);margin-top:24px;opacity:.85;">Founded in 1999 with expertise in innovative workspace design, WTL has since expanded into commercial, residential, landscape and industrial-park projects. Guided by our philosophy of Integrating Design &amp; Engineering, we now partner with 70+ globally recognized brands and rank among China's most representative premium design firms.</p>
+          </div>
+        </div>
+        <div data-reveal="" style="border-radius:16px;overflow:hidden;border:1px solid var(--line);min-height:clamp(340px,44vh,540px);background:#eef0f3;"><img src="images/about-office.jpg" alt="WTL Design 办公空间" style="width:100%;height:100%;min-height:clamp(340px,44vh,540px);object-fit:cover;display:block;"></div>
+      </div>
+      <div data-reveal="" data-m="1" style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,4vw,60px);border-top:1px solid var(--line);padding-top:28px;margin-top:clamp(32px,5vh,54px);">
+        <div><div style="font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(30px,3.4vw,46px);line-height:1;">1999</div><div style="font-size:13px;color:var(--ink2);margin-top:8px;">始于办公空间设计</div></div>
+        <div><div style="font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(30px,3.4vw,46px);line-height:1;">2005</div><div style="font-size:13px;color:var(--ink2);margin-top:8px;">拓展至商业 · 私宅 · 景观 · 产业园</div></div>
+        <div><div style="font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(30px,3.4vw,46px);line-height:1.05;">TODAY</div><div style="font-size:13px;color:var(--ink2);margin-top:8px;">中国最具代表性的高端建筑设计公司之一</div></div>
+      </div>
+  </section>
+
+  <!-- 02 创始人 (full page) -->
+  <section id="founder" data-screen-label="Team" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:clamp(90px,11vh,150px) clamp(20px,5vw,64px);">
+    <div data-sechead="" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:clamp(40px,6vh,72px);flex-wrap:wrap;">
+      <span style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;color:var(--ink2);text-transform:uppercase;display:flex;align-items:center;gap:10px;"><b style="color:var(--accent);font-weight:700;">02</b> Team</span>
+      <h2 data-sh="" style="font-family:'Archivo Narrow','Arial Narrow',Arial,sans-serif;font-weight:700;text-transform:uppercase;line-height:.9;font-size:clamp(30px,5vw,62px);text-align:right;">团队人员<span style="display:block;font-size:.34em;letter-spacing:.1em;color:var(--ink2);font-weight:600;margin-top:10px;">从掌舵者到 160+ 人的全专业团队</span></h2>
+    </div>
+    <div data-m="1" style="display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1fr);gap:clamp(34px,5vw,72px);align-items:stretch;">
+      <div data-reveal="" style="overflow:hidden;background:#ddd;border:1px solid var(--line);height:clamp(520px,64vh,760px);"><img src="images/founder.jpg" alt="田丽莲 Lilian Tian" style="width:100%;height:100%;object-fit:cover;object-position:center 28%;display:block;"></div>
+      <div data-reveal="" style="display:flex;flex-direction:column;justify-content:center;">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;"><h3 style="font-size:clamp(32px,3.6vw,48px);font-weight:800;">田丽莲</h3><span style="font-size:clamp(20px,2vw,30px);font-weight:800;letter-spacing:.01em;">Lilian Tian</span></div>
+          <div style="margin-top:22px;display:flex;flex-direction:column;gap:10px;">
+            <div><div style="font-size:14px;font-weight:700;line-height:1.5;">朋明建筑创始人兼首席设计师</div><div style="font-size:12px;color:var(--ink2);line-height:1.5;">Founder and Principal Designer of WTL Design</div></div>
+            <div><div style="font-size:14px;font-weight:700;line-height:1.5;">金尚集团创始人 · 董事长 · 首席设计师</div><div style="font-size:12px;color:var(--ink2);line-height:1.5;">Founder, Chairman and Principal Designer of JinShang Group</div></div>
+            <div><div style="font-size:14px;font-weight:700;line-height:1.5;">ALUM 品莲物料馆创始人</div><div style="font-size:12px;color:var(--ink2);line-height:1.5;">Founder of ALUM Material Library</div></div>
+            <div><div style="font-size:14px;font-weight:700;line-height:1.5;">中国建筑装饰协会（CBDA）软装分会副会长</div><div style="font-size:12px;color:var(--ink2);line-height:1.5;">Vice President of CBDA Soft Decoration Branch</div></div>
+            <div><div style="font-size:14px;font-weight:700;line-height:1.5;">意大利《灯光与设计》杂志设计师顾问兼特约撰稿人</div><div style="font-size:12px;color:var(--ink2);line-height:1.5;">Design Consultant and Contributing Writer for Luce e Design Magazine</div></div>
+          </div>
+        </div>
+        <div style="margin-top:clamp(26px,3.5vh,40px);">
+          <p style="font-size:14.5px;color:var(--ink);line-height:1.95;border-top:1px solid var(--line);padding-top:clamp(22px,3vh,32px);">田丽莲（Lilian Tian），北京人，集企业家、室内建筑师与环球旅行者于一身。24 岁时，她创立了个人工作室 —— WTL Design 朋明建筑。怀着不变的信念，她认为卓越的设计能经得起时间淬炼，历久弥新，同时保留实用功能与独特个性。她以诗意的语言诠释自己的理念：</p>
+          <p style="font-size:clamp(16px,1.5vw,20px);font-weight:800;text-align:center;line-height:1.7;margin-top:22px;color:var(--accent);">“我生于诗意的土地，因而所创造的空间亦应流淌诗的灵韵。”</p>
+          <p style="font-size:14px;color:var(--ink2);text-align:center;line-height:1.9;margin-top:14px;">在这一信念的引领下，她陆续打造了「金尚」系列作品，<br>涵盖金尚源、金尚里、金尚慕田峪、金尚城溪与金尚东山墅。</p>
+        </div>
+      </div>
+    </div>
+    <div data-reveal="" data-m="1" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(24px,4vw,56px);align-items:center;border-top:1px solid var(--line);margin-top:clamp(30px,4.5vh,48px);padding-top:clamp(24px,3.5vh,36px);">
+      <p data-en="" style="font-size:12.5px;color:var(--ink2);line-height:1.85;">Lilian Tian, Beijing native, entrepreneur, interior architect and world traveler. At the age of 24, she established her own studio – WTL Design. With unwavering conviction, she believes a well-designed object can endure the test of time.</p>
+      <p data-en="" style="font-size:13.5px;font-weight:700;font-style:italic;text-align:center;line-height:1.8;color:var(--ink);">“I was born in a land of poetry, and thus, the spaces I design should be imbued with a poetic essence.”</p>
+      <p data-en="" style="font-size:12.5px;color:var(--ink2);line-height:1.85;">Guided by this belief, she created the JinShang series, which include JinShang Yuan, JinShang Li, JinShang MuTianYu, JinShang ChengXi and JinShang DongShanShu.</p>
+    </div>
+  </section>
+
+  <!-- TEAM (接在团队人员之后) -->
+  <section data-screen-label="Team" style="padding:clamp(24px,4vw,60px) clamp(20px,5vw,64px) clamp(50px,7vw,90px);">
+    <div data-m="1" style="display:grid;grid-template-columns:auto 1fr;gap:clamp(24px,4vw,56px);align-items:center;margin-bottom:clamp(34px,4vw,54px);flex-wrap:wrap;">
+      <div style="font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(72px,11vw,150px);line-height:.85;">160<span style="color:var(--accent);">+</span></div>
+      <div data-reveal=""><p style="font-size:clamp(18px,2.2vw,28px);font-weight:500;line-height:1.5;">做追求卓越的信徒，给予空间情感，让使用者幸福。</p><p data-en="" style="font-family:ui-monospace,monospace;font-size:12px;letter-spacing:.04em;color:var(--ink2);margin-top:14px;line-height:1.7;">Be a believer in the pursuit of excellence; give emotion to spaces and happiness to users.</p></div>
+    </div>
+    <div data-reveal="" style="overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);">
+      <div data-anim="" style="display:flex;width:max-content;animation:wtlscroll 42s linear infinite;">
+        <img src="images/team-strip.jpg" alt="WTL Design 团队" style="height:clamp(130px,16vw,210px);width:auto;flex:0 0 auto;object-fit:cover;display:block;filter:grayscale(1);">
+        <img src="images/team-strip.jpg" alt="" aria-hidden="true" style="height:clamp(130px,16vw,210px);width:auto;flex:0 0 auto;object-fit:cover;display:block;filter:grayscale(1);">
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 双甲资质 (full page) -->
+  <section id="qual" data-screen-label="Qualification" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:clamp(90px,11vh,150px) clamp(20px,5vw,64px);">
+    <div data-sechead="" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:clamp(40px,6vh,72px);flex-wrap:wrap;">
+      <span style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;color:var(--ink2);text-transform:uppercase;display:flex;align-items:center;gap:10px;"><b style="color:var(--accent);font-weight:700;">03</b> Qualification</span>
+      <h2 data-sh="" style="font-family:'Archivo Narrow','Arial Narrow',Arial,sans-serif;font-weight:700;text-transform:uppercase;line-height:.9;font-size:clamp(30px,5vw,62px);text-align:right;">双甲资质<span style="display:block;font-size:.34em;letter-spacing:.1em;color:var(--ink2);font-weight:600;margin-top:10px;">设计与施工，双甲齐备</span></h2>
+    </div>
+    <div data-m="1" style="display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,6vw,90px);align-items:center;">
+      <div data-reveal="">
+        <div data-qcf="" style="position:relative;width:100%;height:clamp(360px,50vh,540px);perspective:1600px;">
+          <div data-qcard="" data-cap="营业执照" data-en="Business License · 注册资本 6000 万" style="position:absolute;top:50%;left:50%;width:min(98%,560px);aspect-ratio:1.55/1;margin-left:calc(min(98%,560px) / -2);margin-top:calc(min(98%,560px) / 1.55 / -2);transform-origin:center center;transition:transform .6s cubic-bezier(.2,.75,.25,1),opacity .5s;background:#fff;border:1px solid var(--line);box-shadow:0 34px 70px -30px rgba(0,0,0,.5);overflow:hidden;cursor:pointer;will-change:transform;">
+            <img src="images/certs/biz.jpg" alt="营业执照" style="width:100%;height:100%;object-fit:contain;background:#fff;display:block;">
+          </div>
+          <div data-qcard="" data-cap="建筑业企业资质证书" data-en="专业承包壹级 · 施工总承包贰级" style="position:absolute;top:0;left:50%;width:min(66%,290px);aspect-ratio:1/1.414;margin-left:calc(min(66%,290px) / -2);transform-origin:center center;transition:transform .6s cubic-bezier(.2,.75,.25,1),opacity .5s;background:#fff;border:1px solid var(--accent);box-shadow:0 34px 70px -30px rgba(0,0,0,.5);overflow:hidden;cursor:pointer;will-change:transform;">
+            <img src="images/certs/construction.jpg" alt="建筑业企业资质证书" style="width:100%;height:100%;object-fit:contain;background:#fff;display:block;">
+            <div style="position:absolute;left:0;top:0;background:var(--accent);color:#fff;font-family:ui-monospace,monospace;font-size:10px;letter-spacing:.12em;padding:5px 10px;">壹级 · LEVEL 1</div>
+          </div>
+          <div data-qcard="" data-cap="工程设计资质证书" data-en="建筑装饰工程设计专项 · 甲级" style="position:absolute;top:0;left:50%;width:min(66%,290px);aspect-ratio:1/1.414;margin-left:calc(min(66%,290px) / -2);transform-origin:center center;transition:transform .6s cubic-bezier(.2,.75,.25,1),opacity .5s;background:#fff;border:1px solid var(--accent);box-shadow:0 34px 70px -30px rgba(0,0,0,.5);overflow:hidden;cursor:pointer;will-change:transform;">
+            <img src="images/certs/design.jpg" alt="工程设计资质证书" style="width:100%;height:100%;object-fit:contain;background:#fff;display:block;">
+            <div style="position:absolute;left:0;top:0;background:var(--accent);color:#fff;font-family:ui-monospace,monospace;font-size:10px;letter-spacing:.12em;padding:5px 10px;">甲级 · LEVEL A</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:20px;">
+          <div data-qcap="" style="font-size:clamp(15px,1.5vw,19px);font-weight:800;line-height:1.3;">营业执照</div>
+          <div data-qcapen="" style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.1em;color:var(--ink2);margin-top:6px;">Business License · 注册资本 6000 万</div>
+          <div data-qdots="" style="display:flex;gap:9px;justify-content:center;margin-top:16px;"></div>
+        </div>
+        <p style="margin-top:16px;font-size:clamp(14px,1.1vw,16px);line-height:1.85;color:var(--ink2);max-width:430px;margin-left:auto;margin-right:auto;text-align:center;">设计与施工双甲齐备，EPCO 全链条具备自有交付能力 —— 行业内极少数企业才能达到的门槛。</p>
+      </div>
+      <div data-reveal="" style="position:relative;z-index:20;">
+        <div style="display:flex;flex-direction:column;border-top:1px solid var(--line);">
+          <div style="display:flex;align-items:baseline;gap:14px;padding:22px 0;border-bottom:1px solid var(--line);"><span style="font-family:ui-monospace,monospace;font-size:13px;color:var(--accent);letter-spacing:.1em;">A</span><span style="font-size:clamp(16px,1.5vw,19px);font-weight:700;">建筑装饰设计 · 甲级</span><span style="font-size:10.5px;letter-spacing:.12em;color:var(--ink2);text-transform:uppercase;margin-left:auto;text-align:right;">Level A · Design</span></div>
+          <div style="display:flex;align-items:baseline;gap:14px;padding:22px 0;border-bottom:1px solid var(--line);"><span style="font-family:ui-monospace,monospace;font-size:13px;color:var(--accent);letter-spacing:.1em;">A</span><span style="font-size:clamp(16px,1.5vw,19px);font-weight:700;">建筑装修装饰工程专业承包 · 壹级</span><span style="font-size:10.5px;letter-spacing:.12em;color:var(--ink2);text-transform:uppercase;margin-left:auto;text-align:right;">Level A · GC</span></div>
+          <div style="display:flex;align-items:baseline;gap:14px;padding:22px 0;"><span style="font-family:ui-monospace,monospace;font-size:13px;color:var(--accent);letter-spacing:.1em;">B</span><span style="font-size:clamp(16px,1.5vw,19px);font-weight:700;">建筑工程施工总承包 · 贰级</span><span style="font-size:10.5px;letter-spacing:.12em;color:var(--ink2);text-transform:uppercase;margin-left:auto;text-align:right;">Level B · GC</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWROOM BAND -->
+  <section data-screen-label="Showroom" style="position:relative;height:clamp(360px,56vh,600px);overflow:hidden;background:#100e09;">
+    <img src="images/showroom.jpg" alt="WTL Design 北京总部展厅" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,14,9,.66) 0%,rgba(16,14,9,.12) 52%,transparent 82%);"></div>
+    <div data-reveal="" style="position:absolute;left:0;bottom:0;padding:clamp(30px,5vw,64px) clamp(20px,5vw,64px);color:#fff;max-width:760px;">
+      <span style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.8);">总部展厅 · Beijing Studio</span>
+      <p style="margin-top:14px;font-size:clamp(19px,2.3vw,30px);line-height:1.45;font-weight:500;text-shadow:0 2px 22px rgba(0,0,0,.45);">设计语言，从我们自己工作的空间开始 —— 东方器物与当代材料，在此静静对话。</p>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section data-screen-label="Stats" style="background:#fff;color:var(--ink);padding:0;">
+    <div data-m="2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+      <div data-reveal="" style="background:#fff;padding:clamp(26px,4vw,46px) clamp(18px,2.5vw,34px);">
+        <div style="font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(40px,6vw,80px);line-height:1;letter-spacing:-.01em;">1999</div>
+        <div style="font-size:11px;letter-spacing:.14em;margin-top:14px;text-transform:uppercase;">创立 · Founded</div>
+        <div style="font-size:10.5px;letter-spacing:.08em;color:var(--ink2);margin-top:5px;">二十余年深耕</div>
+      </div>
+      <div data-reveal="" style="background:#fff;padding:clamp(26px,4vw,46px) clamp(18px,2.5vw,34px);">
+        <div data-count="1000+" style="font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(40px,6vw,80px);line-height:1;letter-spacing:-.01em;">1,000+</div>
+        <div style="font-size:11px;letter-spacing:.14em;margin-top:14px;text-transform:uppercase;">服务客户 · Clients</div>
+        <div style="font-size:10.5px;letter-spacing:.08em;color:var(--ink2);margin-top:5px;">含 50+ 世界 500 强</div>
+      </div>
+      <div data-reveal="" style="background:#fff;padding:clamp(26px,4vw,46px) clamp(18px,2.5vw,34px);">
+        <div data-count="160+" style="font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(40px,6vw,80px);line-height:1;letter-spacing:-.01em;">160+</div>
+        <div style="font-size:11px;letter-spacing:.14em;margin-top:14px;text-transform:uppercase;">全专业团队 · Team</div>
+        <div style="font-size:10.5px;letter-spacing:.08em;color:var(--ink2);margin-top:5px;">Professionals</div>
+      </div>
+      <div data-reveal="" style="background:#fff;padding:clamp(26px,4vw,46px) clamp(18px,2.5vw,34px);">
+        <div data-count="20000+" style="font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(40px,6vw,80px);line-height:1;letter-spacing:-.01em;">20,000+</div>
+        <div style="font-size:11px;letter-spacing:.14em;margin-top:14px;text-transform:uppercase;">设计施工项目 · Projects</div>
+        <div style="font-size:10.5px;letter-spacing:.08em;color:var(--ink2);margin-top:5px;">设计施工项目经验</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS TICKER -->
+  <div style="overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);">
+    <div data-anim="" style="display:flex;align-items:center;white-space:nowrap;width:max-content;animation:wtlscroll 72s linear infinite;"><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="jd" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/jd.png" alt="京东 JD.com" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="isoftstone" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/isoftstone.png" alt="软通动力 iSoftStone" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="bmwexp" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/bmw.png" alt="宝马 BMW" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="mercedes" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/benz.png" alt="奔驰 Mercedes-Benz" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/vw.png" alt="大众 Volkswagen" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="lenovo" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/lenovo.png" alt="联想 Lenovo" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="microsoft-cd" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/microsoft.png" alt="微软 Microsoft" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="goertek" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/goer.png" alt="歌尔 Goermicro" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/tesla.png" alt="特斯拉 TESLA" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="wework" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/wework.png" alt="WeWork" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/alibaba.png" alt="阿里巴巴 Alibaba" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/linkedin.png" alt="领英 LinkedIn" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="jd" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/jd.png" alt="京东 JD.com" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="isoftstone" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/isoftstone.png" alt="软通动力 iSoftStone" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="bmwexp" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/bmw.png" alt="宝马 BMW" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="mercedes" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/benz.png" alt="奔驰 Mercedes-Benz" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/vw.png" alt="大众 Volkswagen" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="lenovo" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/lenovo.png" alt="联想 Lenovo" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="microsoft-cd" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/microsoft.png" alt="微软 Microsoft" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="goertek" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/goer.png" alt="歌尔 Goermicro" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/tesla.png" alt="特斯拉 TESLA" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="wework" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/wework.png" alt="WeWork" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/alibaba.png" alt="阿里巴巴 Alibaba" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/linkedin.png" alt="领英 LinkedIn" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span></div>
+    <div data-anim="" style="display:flex;align-items:center;white-space:nowrap;width:max-content;animation:wtlscroll 72s linear infinite reverse;margin-top:22px;"><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="amd" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/amd.png" alt="AMD" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="aranya" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/aranya.png" alt="阿那亚 aranya" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="js-yuan" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/shang.png" alt="金尚 Shang" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/citic.png" alt="中信资本 CITIC" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/didi.png" alt="滴滴 DiDi" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/ericsson.png" alt="爱立信 ERICSSON" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="scania" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/scania.png" alt="斯堪尼亚 SCANIA" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/hitachi.png" alt="日立 HITACHI" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/hangseng.png" alt="恒生银行 Hang Seng" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/bob.png" alt="北京银行 BOB" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/petrochina.png" alt="中国石油 PetroChina" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/htc.png" alt="HTC" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="amd" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/amd.png" alt="AMD" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="aranya" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/aranya.png" alt="阿那亚 aranya" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="js-yuan" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/shang.png" alt="金尚 Shang" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/citic.png" alt="中信资本 CITIC" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/didi.png" alt="滴滴 DiDi" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/ericsson.png" alt="爱立信 ERICSSON" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><a href="javascript:void(0)" data-gallery="scania" style="display:inline-flex;align-items:center;cursor:pointer;position:relative;" title="查看案例"><span aria-hidden="true" style="position:absolute;top:0;right:-4px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--paper);"></span><img src="images/logos/scania.png" alt="斯堪尼亚 SCANIA" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;" style-hover="opacity:1"></a></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/hitachi.png" alt="日立 HITACHI" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/hangseng.png" alt="恒生银行 Hang Seng" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/bob.png" alt="北京银行 BOB" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/petrochina.png" alt="中国石油 PetroChina" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span><span style="display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 32px;flex:0 0 auto;border-right:1px solid var(--line);"><img src="images/logos/htc.png" alt="HTC" style="height:30px;width:auto;max-width:158px;object-fit:contain;display:block;opacity:.82;"></span></div>
+  </div>
+
+  <!-- EPCO -->
+  <section id="epco" data-screen-label="EPCO" style="padding:clamp(70px,10vw,140px) clamp(20px,5vw,64px);">
+    <div data-sechead="" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:46px;flex-wrap:wrap;">
+      <span style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;color:var(--ink2);text-transform:uppercase;display:flex;align-items:center;gap:10px;"><b style="color:var(--accent);font-weight:700;">04</b> What we do</span>
+      <h2 data-sh="" style="font-family:'Archivo Narrow','Arial Narrow',Arial,sans-serif;font-weight:700;text-transform:uppercase;line-height:.9;font-size:clamp(30px,5vw,62px);text-align:right;">业务范围<span style="display:block;font-size:.34em;letter-spacing:.1em;color:var(--ink2);font-weight:600;margin-top:10px;">从设计到运营的全链条服务</span></h2>
+    </div>
+    <p style="text-align:center;max-width:58ch;margin:0 auto clamp(28px,4vw,48px);font-size:15px;color:var(--ink2);">十项专业服务，覆盖从设计、采购、建造到运营的完整链条 —— 同一支队伍，从一笔概念到长期经营。</p>
+    <div data-reveal="" style="position:relative;overflow:hidden;max-width:720px;margin:0 auto;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(34px,4.4vw,54px) 0;">
+      <span aria-hidden="true" style="position:absolute;left:50%;top:12.5%;transform:translate(-50%,-50%);font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(80px,11vw,140px);line-height:1;color:var(--accent);opacity:.07;pointer-events:none;user-select:none;z-index:0;">E</span>
+      <span aria-hidden="true" style="position:absolute;left:50%;top:37.5%;transform:translate(-50%,-50%);font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(80px,11vw,140px);line-height:1;color:var(--accent);opacity:.07;pointer-events:none;user-select:none;z-index:0;">P</span>
+      <span aria-hidden="true" style="position:absolute;left:50%;top:62.5%;transform:translate(-50%,-50%);font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(80px,11vw,140px);line-height:1;color:var(--accent);opacity:.07;pointer-events:none;user-select:none;z-index:0;">C</span>
+      <span aria-hidden="true" style="position:absolute;left:50%;top:87.5%;transform:translate(-50%,-50%);font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;font-size:clamp(80px,11vw,140px);line-height:1;color:var(--accent);opacity:.07;pointer-events:none;user-select:none;z-index:0;">O</span>
+      <div style="position:relative;z-index:1;display:flex;flex-direction:column;gap:clamp(20px,2.5vw,30px);text-align:center;">
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">建筑室内空间环境设计</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">Interior Design</div></div>
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">装饰深化设计</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">Design Development</div></div>
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">灯光氛围设计</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">Lighting Design</div></div>
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">机电智能化楼宇设计</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">MEP &amp; IT Design</div></div>
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">城市更新景观设计</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">City Landscape</div></div>
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">软装家具艺术品设计及顾问</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">Art &amp; Decoration Consultant</div></div>
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">造价咨询服务</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">Pricing &amp; Quotes</div></div>
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">工程管理咨询顾问</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">Construction Management</div></div>
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">商业综合体更新运营</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">Commercial Space Renovation</div></div>
+        <div><div style="font-size:clamp(17px,1.8vw,21px);font-weight:800;line-height:1.3;">售后服务</div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:4px;">After-Sales Service</div></div>
+      </div>
+    </div>
+    <div data-reveal="" data-m="1" style="margin-top:64px;border:1px solid var(--ink);border-radius:18px;padding:clamp(28px,4vw,52px);display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,40px);align-items:center;">
+      <div style="font-family:'Archivo Narrow',Arial,sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(46px,7vw,96px);line-height:.85;">1<span style="color:var(--accent);">+</span>1<br><span style="color:var(--accent);">&gt;</span>2</div>
+      <p style="font-size:15px;color:var(--ink2);max-width:48ch;"><b style="color:var(--ink);font-weight:700;">一个团队，一个对接人。</b>规划、设计、深化、施工、运营在同一支队伍里闭环 —— 你不必在设计公司、深化、施工队之间来回翻译。<b style="color:var(--ink);font-weight:700;">沟通成本省下来，方案不走样地落地。</b>再加上金尚自持楼宇的运营经验反哺，我们做的不是「装一次」，而是<b style="color:var(--ink);font-weight:700;">「能经营的空间」</b>。</p>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section id="cases" data-screen-label="Cases" style="padding:clamp(70px,10vw,140px) clamp(20px,5vw,64px);">
+    <div data-sechead="" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:38px;flex-wrap:wrap;">
+      <span style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;color:var(--ink2);text-transform:uppercase;display:flex;align-items:center;gap:10px;"><b style="color:var(--accent);font-weight:700;">05</b> What we've done</span>
+      <h2 data-sh="" style="font-family:'Archivo Narrow','Arial Narrow',Arial,sans-serif;font-weight:700;text-transform:uppercase;line-height:.9;font-size:clamp(30px,5vw,62px);text-align:right;">项目案例<span style="display:block;font-size:.34em;letter-spacing:.1em;color:var(--ink2);font-weight:600;margin-top:10px;">点击任意项目，翻看现场实拍</span></h2>
+    </div>
+    <div data-cattabs="" style="display:flex;flex-wrap:wrap;gap:10px;position:sticky;top:52px;z-index:90;background:var(--paper);padding:14px 0 16px;margin-bottom:clamp(18px,3vw,30px);border-bottom:1px solid var(--line);">
+        <button data-cat="office" data-active="1" style="font-family:'Noto Sans SC',sans-serif;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:40px;padding:9px 20px;font-size:13px;font-weight:600;transition:all .25s;display:inline-flex;align-items:center;gap:8px;">办公 <span style="font-family:ui-monospace,monospace;font-size:11px;opacity:.6;">Office · 21</span></button>
+        <button data-cat="edu" data-active="0" style="font-family:'Noto Sans SC',sans-serif;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:40px;padding:9px 20px;font-size:13px;font-weight:600;transition:all .25s;display:inline-flex;align-items:center;gap:8px;">文化教育 <span style="font-family:ui-monospace,monospace;font-size:11px;opacity:.6;">Education · 9</span></button>
+        <button data-cat="dining" data-active="0" style="font-family:'Noto Sans SC',sans-serif;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:40px;padding:9px 20px;font-size:13px;font-weight:600;transition:all .25s;display:inline-flex;align-items:center;gap:8px;">商业餐饮 <span style="font-family:ui-monospace,monospace;font-size:11px;opacity:.6;">Commercial & Dining · 15</span></button>
+        <button data-cat="home" data-active="0" style="font-family:'Noto Sans SC',sans-serif;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:40px;padding:9px 20px;font-size:13px;font-weight:600;transition:all .25s;display:inline-flex;align-items:center;gap:8px;">私宅会所 <span style="font-family:ui-monospace,monospace;font-size:11px;opacity:.6;">Residence & Club · 12</span></button>
+        <button data-cat="js" data-active="0" style="font-family:'Noto Sans SC',sans-serif;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:40px;padding:9px 20px;font-size:13px;font-weight:600;transition:all .25s;display:inline-flex;align-items:center;gap:8px;">金尚系列 <span style="font-family:ui-monospace,monospace;font-size:11px;opacity:.6;">城市更新 · 6</span></button>
+
+    </div>
+      <div data-catpanel="office" data-m="2" data-cases="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px);">
+      <a href="javascript:void(0)" data-gallery="jd" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/jd/1.jpg" loading="lazy" alt="京东集团总部" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">6 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">JD.com Headquarters</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">京东集团总部</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 500,000+㎡ · 2014–2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="isoftstone" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/isoftstone/1.jpg" loading="lazy" alt="软通动力" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">iSoftStone</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">软通动力</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京·无锡·武汉·成都 · 100,000+㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="goertek" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/goertek/1.jpg" loading="lazy" alt="歌尔集团" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">GoerTek</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">歌尔集团</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">山东·北京·上海 · 35,000+㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="kale" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/kale/1.jpg" loading="lazy" alt="开勒" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">KALE</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">开勒</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">上海 · 20,000+㎡ · 2022</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="lenovo" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/lenovo/1.jpg" loading="lazy" alt="联想上海总部" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Lenovo Office</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">联想上海总部</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">上海 · 18,000+㎡ · 2017</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="microsoft-cd" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/microsoft-cd/1.jpg" loading="lazy" alt="微软 · 成都" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Microsoft Chengdu</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">微软 · 成都</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">成都 · 960+㎡ · 2020</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="microsoft-life" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/microsoft-life/1.jpg" loading="lazy" alt="微软 LIFE · 北京" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Microsoft LIFE</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">微软 LIFE · 北京</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 960+㎡ · 2020</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="wework" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/wework/1.jpg" loading="lazy" alt="WeWork 联合办公" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">WeWork</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">WeWork 联合办公</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 7,000+㎡ · 2019</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="scania" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/scania/1.jpg" loading="lazy" alt="斯堪尼亚" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">SCANIA</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">斯堪尼亚</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 1,000+㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="amd" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/amd/1.jpg" loading="lazy" alt="AMD 北京" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">AMD</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">AMD 北京</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 400+㎡ · 2019</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="arcticgreen" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/arcticgreen/1.jpg" loading="lazy" alt="极地能源" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">2 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">ArcticGreen</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">极地能源</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 500+㎡ · 2023</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="cci" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/cci/1.jpg" loading="lazy" alt="中法工商会" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">CCI France Chine</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">中法工商会</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 2,000+㎡ · 2015</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="zrt" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/zrt/1.jpg" loading="lazy" alt="中融信托总部" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">ZRT Headquarters</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">中融信托总部</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 20,000+㎡ · 2022</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="gic" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/gic/1.jpg" loading="lazy" alt="新加坡政府投资北京办公室 GIC" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">5 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">GIC Beijing</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">新加坡政府投资北京办公室</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 383㎡ · 2025</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="bitic" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/bitic/3.jpg" loading="lazy" alt="中信信托" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">CITIC Trust</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">中信信托</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 10,000+㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="hkj" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/hkj/1.jpg" loading="lazy" alt="海科金集团" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">HKJ Group</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">海科金集团</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 10,000+㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="beyondsoft" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/beyondsoft/1.jpg" loading="lazy" alt="博彦科技" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">6 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">BEYONDSOFT</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">博彦科技</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 1,000+㎡ · 2023</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="one" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/one/1.jpg" loading="lazy" alt="ONE" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">ONE</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">ONE</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 2,000㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="yuehua" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/yuehua/1.jpg" loading="lazy" alt="乐华娱乐" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Yuehua Entertainment</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">乐华娱乐</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 10,000+㎡ · 2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="jaywalk" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/jaywalk/1.jpg" loading="lazy" alt="Jaywalk" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Jaywalk</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">Jaywalk</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 1,500+㎡ · 2020</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="jiaying" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/jiaying/1.jpg" loading="lazy" alt="嘉映" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">JIAYING</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">嘉映</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 1,000+㎡ · 2015</div></div>
+      </a>
+      </div>
+      <div data-catpanel="edu" data-m="2" data-cases="" style="display:none;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px);">
+      <a href="javascript:void(0)" data-gallery="pakistan" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/pakistan/1.jpg" loading="lazy" alt="巴基斯坦大使馆" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Embassy of Pakistan</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">巴基斯坦大使馆</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 383㎡ · 2025</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="aranya" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/aranya/1.jpg" loading="lazy" alt="阿那亚" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Aranya</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">阿那亚</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 2,000+㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="shokai" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/shokai/1.jpg" loading="lazy" alt="首开书院" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Shokai Shuyuan</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">首开书院</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 1,000+㎡ · 2023</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="lida" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/lida/1.jpg" loading="lazy" alt="上海立达学院" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">8 图</span><span data-schoolgrad="" style="position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(18,20,28,.64),rgba(18,20,28,.14) 52%,transparent);pointer-events:none;"></span><span data-schoollogo="" style="position:absolute;left:14px;bottom:12px;width:clamp(50px,4.6vw,66px);height:clamp(50px,4.6vw,66px);border-radius:50%;overflow:hidden;background:rgba(255,255,255,.5);box-shadow:0 3px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;"><img src="images/cases/lida/logo.png" alt="上海立达学院 校徽" style="width:116%;height:116%;object-fit:contain;mix-blend-mode:multiply;" onerror="this.style.display='none'"></span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Shanghai Lida University</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">上海立达学院</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">8,000+㎡ · 2023–2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="scau" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/scau/1.jpg" loading="lazy" alt="华南农业大学 珠江学院" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span><span data-schoolgrad="" style="position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(18,20,28,.64),rgba(18,20,28,.14) 52%,transparent);pointer-events:none;"></span><span data-schoollogo="" style="position:absolute;left:14px;bottom:12px;width:clamp(50px,4.6vw,66px);height:clamp(50px,4.6vw,66px);border-radius:50%;overflow:hidden;background:rgba(255,255,255,.5);box-shadow:0 3px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;"><img src="images/cases/scau/logo.png" alt="华南农业大学 校徽" style="width:116%;height:116%;object-fit:contain;mix-blend-mode:multiply;" onerror="this.style.display='none'"></span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">SCAU Zhujiang College</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">华南农业大学 珠江学院</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">10,000+㎡ · 2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="yianjin" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/yianjin/1.jpg" loading="lazy" alt="天津嘉诚中学" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">2 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Tianjin Jiacheng School</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">天津嘉诚中学</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">3,200+㎡ · 2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="bjft" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/bjft/1.jpg" loading="lazy" alt="北京金融科技学院" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">5 图</span><span data-schoolgrad="" style="position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(18,20,28,.64),rgba(18,20,28,.14) 52%,transparent);pointer-events:none;"></span><span data-schoollogo="" style="position:absolute;left:14px;bottom:12px;width:clamp(50px,4.6vw,66px);height:clamp(50px,4.6vw,66px);border-radius:50%;overflow:hidden;background:rgba(255,255,255,.5);box-shadow:0 3px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;"><img src="images/cases/bjft/logo.png" alt="北京金融科技学院 校徽" style="width:116%;height:116%;object-fit:contain;mix-blend-mode:multiply;" onerror="this.style.display='none'"></span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Beijing College of Financial Technology</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">北京金融科技学院</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">2,700–6,000+㎡ · 2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="fayao" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/fayao/1.jpg" loading="lazy" alt="法耀英华实验高中" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Fayao Yinghua Experimental High School</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">法耀英华实验高中</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">1,000+㎡ · 2022</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="keystone" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/keystone/1.jpg" loading="lazy" alt="北京鼎石学校" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span><span data-schoolgrad="" style="position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(18,20,28,.64),rgba(18,20,28,.14) 52%,transparent);pointer-events:none;"></span><span data-schoollogo="" style="position:absolute;left:14px;bottom:12px;width:clamp(50px,4.6vw,66px);height:clamp(50px,4.6vw,66px);border-radius:50%;overflow:hidden;background:rgba(255,255,255,.5);box-shadow:0 3px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;"><img src="images/cases/keystone/logo.png" alt="北京鼎石学校 校徽" style="width:116%;height:116%;object-fit:contain;mix-blend-mode:multiply;" onerror="this.style.display='none'"></span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Beijing Keystone Academy</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">北京鼎石学校</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 1,000+㎡ · 2019</div></div>
+      </a>
+      </div>
+      <div data-catpanel="dining" data-m="2" data-cases="" style="display:none;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px);">
+      <a href="javascript:void(0)" data-gallery="eliterlife" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/eliterlife/1.jpg" loading="lazy" alt="菁英茶" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">JIngyingclub</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">菁英茶</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 9,000+㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="bmwexp" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/bmwexp/1.jpg" loading="lazy" alt="宝马品牌体验中心" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">BMW Brand Experience</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">宝马品牌体验中心</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">上海 · 2,000㎡ · 红点奖 Red Dot</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="bmwmini" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/bmwmini/1.jpg" loading="lazy" alt="宝马 MINI 体验中心" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">BMW MINI Experience</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">宝马 MINI 体验中心</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">上海 · 1,200㎡</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="bmw4s" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/bmw4s/1.jpg" loading="lazy" alt="宝马摩托 4S" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">BMW Motorrad 4S</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">宝马摩托 4S</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">全国 · 500+㎡ · 2023</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="mercedes" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/mercedes/1.jpg" loading="lazy" alt="奔驰 Me 咖啡" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Mercedes Me</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">奔驰 Me 咖啡</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 体验空间</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="donglaishun" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/donglaishun/1.jpg" loading="lazy" alt="东来顺" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">8 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">DONGLAISHUN</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">东来顺</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 600–800+㎡ · 2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="tiamona" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/tiamona/1.jpg" loading="lazy" alt="Tiamona" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">2 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">TIAMONA</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">Tiamona</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 6,200+㎡ · 2023</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="xxshoku" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/xxshoku/1.jpg" loading="lazy" alt="XXShoku 烘焙" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">XXShoku Bakery</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">XXShoku 烘焙</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 200+㎡ · 2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="cafeflo" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/cafeflo/1.jpg" loading="lazy" alt="Café FLO" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">8 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">CAFÉ FLO</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">Café FLO</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 6,500+㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="qubbe" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/qubbe/1.jpg" loading="lazy" alt="Qubbe" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">QUBBE</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">Qubbe</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 600+㎡ · 2020</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="boxingcat" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/boxingcat/1.jpg" loading="lazy" alt="拳击猫" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Boxing-Cat</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">拳击猫</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 600+㎡ · 2018</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="lan" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/lan/1.jpg" loading="lazy" alt="兰" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">2 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">LAN</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">兰</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">崇礼 · 500+㎡ · 2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="yhspace" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/yhspace/1.jpg" loading="lazy" alt="YH Space" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">YH Space</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">YH Space</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 16,500+㎡ · 2023</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="foreveryoung" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/foreveryoung/1.jpg" loading="lazy" alt="Forever Young" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Forever Young</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">Forever Young</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 26,000+㎡ · 2023</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="lilyspa" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/lilyspa/1.jpg" loading="lazy" alt="LilySpa" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">LilySpa</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">LilySpa</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 16,000+㎡ · 2023</div></div>
+      </a>
+      </div>
+      <div data-catpanel="home" data-m="2" data-cases="" style="display:none;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px);">
+      <a href="javascript:void(0)" data-gallery="greatwall" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/greatwall/1.jpg" loading="lazy" alt="长城脚下大宅" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Great Wall Villa</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">长城脚下大宅</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 700㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="7shang" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/7shang/1.jpg" loading="lazy" alt="7Shang 酒店（金尚自持）" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">7 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">7Shang Hotel</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">7Shang 酒店（金尚自持）</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 金尚自持</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="xiangjiang" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/xiangjiang/1.jpg" loading="lazy" alt="磁器库胡同会所" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Ciqiku Hutong</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">磁器库胡同会所</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 2,000+㎡ · 2020</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="ciqiku" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/ciqiku/1.jpg" loading="lazy" alt="尚融资本会所" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">3 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">ShangRong Club</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">尚融资本会所</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 6,800+㎡ · 2020</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="apt-bj390" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/apt-bj390/1.jpg" loading="lazy" alt="北京公寓" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">6 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Apartment Design</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">北京公寓</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 390㎡ · 2022</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="apt-sz290" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/apt-sz290/1.jpg" loading="lazy" alt="深圳公寓" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">5 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Apartment Design</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">深圳公寓</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">深圳 · 290㎡ · 2023</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="apt-bj250" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/apt-bj250/1.jpg" loading="lazy" alt="北京公寓 Ⅱ" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">7 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Apartment Design</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">北京公寓 Ⅱ</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 250㎡ · 2024</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="villa-680a" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/villa-680a/1.jpg" loading="lazy" alt="私人别墅 · 680" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">6 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Private Villa</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">私人别墅 · 680</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 680㎡ · 2023</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="villa-1800" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/villa-1800/1.jpg" loading="lazy" alt="私人别墅 · 1800" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Private Villa</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">私人别墅 · 1800</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 1,800㎡ · 2020</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="villa-3200" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/villa-3200/1.jpg" loading="lazy" alt="私人别墅 · 3200" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">5 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Private Villa</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">私人别墅 · 3200</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 3,200㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="villa-2100" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/villa-2100/1.jpg" loading="lazy" alt="私人别墅 · 2100" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Private Villa</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">私人别墅 · 2100</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 2,100㎡ · 2021</div></div>
+      </a>
+      <a href="javascript:void(0)" data-gallery="villa-680b" data-reveal="" style="display:block;text-decoration:none;color:inherit;cursor:pointer;">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#d9d6cd;border:1px solid var(--line);"><img src="images/cases/villa-680b/1.jpg" loading="lazy" alt="私人别墅 · 680 Ⅱ" style="width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05)"><span style="position:absolute;right:10px;top:9px;font-family:ui-monospace,monospace;font-size:10px;color:#fff;background:rgba(0,0,0,.42);padding:3px 8px;border-radius:20px;backdrop-filter:blur(2px);">4 图</span></div>
+        <div style="padding-top:14px;"><div style="font-size:10.5px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Private Villa</div><div style="font-size:16px;font-weight:800;margin-top:5px;line-height:1.3;">私人别墅 · 680 Ⅱ</div><div style="font-size:12px;color:var(--ink2);margin-top:8px;">北京 · 680㎡ · 2024</div></div>
+      </a>
+      </div>
+      <div data-catpanel="js" data-cases="" style="display:none;grid-template-columns:1fr;gap:clamp(16px,2vw,28px);">
+      <div data-reveal="" style="position:relative;width:min(880px,100%);margin:0 auto;aspect-ratio:1/1;overflow:hidden;">
+        <!-- 金尚·源 · 顶部 · 玫红 -->
+        <a href="javascript:void(0)" data-gallery="js-yuan" title="金尚·源 · 点击翻看实拍" style="position:absolute;left:26%;top:-13%;width:48%;aspect-ratio:1/1;border-radius:50%;overflow:hidden;z-index:1;box-shadow:0 26px 60px -18px rgba(0,0,0,.38);cursor:pointer;text-decoration:none;transition:transform .5s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.035)">
+          <img src="images/cases/js-yuan/2.jpg" loading="lazy" alt="金尚·源" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#E5306E;opacity:.84;mix-blend-mode:multiply;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#E5306E;opacity:.26;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(0,0,0,0) 42%,rgba(0,0,0,.24) 100%);"></span>
+          <span style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:15%;gap:8px;">
+            <span style="font-family:ui-monospace,monospace;font-size:clamp(8px,1.1vw,10.5px);letter-spacing:.22em;text-transform:uppercase;opacity:.85;">Jinshang Yuan</span>
+            <span style="font-size:clamp(16px,2.6vw,28px);font-weight:800;line-height:1.25;">金尚·源</span>
+            <span aria-hidden="true" style="width:26px;height:1.5px;background:rgba(255,255,255,.75);"></span>
+            <span style="font-size:clamp(9px,1.2vw,12.5px);opacity:.92;">北京 · 13,800㎡ · 2017</span>
+          </span>
+        </a>
+        <!-- 金尚·丽 · 左上 · 橙 -->
+        <a href="javascript:void(0)" data-gallery="js-li" title="金尚·丽 · 点击翻看实拍" style="position:absolute;left:-11%;top:-1%;width:48%;aspect-ratio:1/1;border-radius:50%;overflow:hidden;z-index:2;box-shadow:0 26px 60px -18px rgba(0,0,0,.38);cursor:pointer;text-decoration:none;transition:transform .5s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.035)">
+          <img src="images/cases/js-li/1.jpg" loading="lazy" alt="金尚·丽" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#F2600C;opacity:.84;mix-blend-mode:multiply;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#F2600C;opacity:.26;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(0,0,0,0) 42%,rgba(0,0,0,.24) 100%);"></span>
+          <span style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:15%;gap:8px;">
+            <span style="font-family:ui-monospace,monospace;font-size:clamp(8px,1.1vw,10.5px);letter-spacing:.22em;text-transform:uppercase;opacity:.85;">Jinshang Li</span>
+            <span style="font-size:clamp(16px,2.6vw,28px);font-weight:800;line-height:1.25;">金尚·丽</span>
+            <span aria-hidden="true" style="width:26px;height:1.5px;background:rgba(255,255,255,.75);"></span>
+            <span style="font-size:clamp(9px,1.2vw,12.5px);opacity:.92;">北京 · 17,000㎡ · 2019</span>
+          </span>
+        </a>
+        <!-- 金尚·城溪 · 右上 · 蓝 -->
+        <a href="javascript:void(0)" data-gallery="js-chengxi" title="金尚·城溪 · 点击翻看实拍" style="position:absolute;left:63%;top:-3%;width:48%;aspect-ratio:1/1;border-radius:50%;overflow:hidden;z-index:3;box-shadow:0 26px 60px -18px rgba(0,0,0,.38);cursor:pointer;text-decoration:none;transition:transform .5s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.035)">
+          <img src="images/cases/js-chengxi/1.jpg" loading="lazy" alt="金尚·城溪" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#1E7FD8;opacity:.84;mix-blend-mode:multiply;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#1E7FD8;opacity:.26;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(0,0,0,0) 42%,rgba(0,0,0,.24) 100%);"></span>
+          <span style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:15%;gap:8px;">
+            <span style="font-family:ui-monospace,monospace;font-size:clamp(8px,1.1vw,10.5px);letter-spacing:.22em;text-transform:uppercase;opacity:.85;">Jinshang Chengxi</span>
+            <span style="font-size:clamp(16px,2.6vw,28px);font-weight:800;line-height:1.25;">金尚·城溪</span>
+            <span aria-hidden="true" style="width:26px;height:1.5px;background:rgba(255,255,255,.75);"></span>
+            <span style="font-size:clamp(9px,1.2vw,12.5px);opacity:.92;">北京 · 6,000+㎡ · 2024</span>
+          </span>
+        </a>
+        <!-- 金尚·东山树 · 右下 · 青绿 -->
+        <a href="javascript:void(0)" data-gallery="js-dongshan" title="金尚·东山树 · 点击翻看实拍" style="position:absolute;left:64%;top:39%;width:48%;aspect-ratio:1/1;border-radius:50%;overflow:hidden;z-index:4;box-shadow:0 26px 60px -18px rgba(0,0,0,.38);cursor:pointer;text-decoration:none;transition:transform .5s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.035)">
+          <img src="images/cases/js-dongshan/1.jpg" loading="lazy" alt="金尚·东山树" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#0E9488;opacity:.84;mix-blend-mode:multiply;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#0E9488;opacity:.26;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(0,0,0,0) 42%,rgba(0,0,0,.24) 100%);"></span>
+          <span style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:15%;gap:8px;">
+            <span style="font-family:ui-monospace,monospace;font-size:clamp(8px,1.1vw,10.5px);letter-spacing:.22em;text-transform:uppercase;opacity:.85;">Jinshang Dongshanshu</span>
+            <span style="font-size:clamp(16px,2.6vw,28px);font-weight:800;line-height:1.25;">金尚·东山树</span>
+            <span aria-hidden="true" style="width:26px;height:1.5px;background:rgba(255,255,255,.75);"></span>
+            <span style="font-size:clamp(9px,1.2vw,12.5px);opacity:.92;">北京 · 6,000+㎡ · 2024</span>
+          </span>
+        </a>
+        <!-- 金尚长城大宅 · 底部 · 橄榄绿 -->
+        <a href="javascript:void(0)" data-gallery="greatwall" title="金尚长城大宅 · 点击翻看实拍" style="position:absolute;left:29%;top:58%;width:48%;aspect-ratio:1/1;border-radius:50%;overflow:hidden;z-index:5;box-shadow:0 26px 60px -18px rgba(0,0,0,.38);cursor:pointer;text-decoration:none;transition:transform .5s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.035)">
+          <img src="images/cases/greatwall/1.jpg" loading="lazy" alt="金尚长城大宅" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#7CA612;opacity:.84;mix-blend-mode:multiply;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#7CA612;opacity:.26;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(0,0,0,0) 42%,rgba(0,0,0,.24) 100%);"></span>
+          <span style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:15%;gap:8px;">
+            <span style="font-family:ui-monospace,monospace;font-size:clamp(8px,1.1vw,10.5px);letter-spacing:.22em;text-transform:uppercase;opacity:.85;">Great Wall Villa</span>
+            <span style="font-size:clamp(16px,2.6vw,28px);font-weight:800;line-height:1.25;">金尚长城大宅</span>
+            <span aria-hidden="true" style="width:26px;height:1.5px;background:rgba(255,255,255,.75);"></span>
+            <span style="font-size:clamp(9px,1.2vw,12.5px);opacity:.92;">北京 · 700㎡ · 2021</span>
+          </span>
+        </a>
+        <!-- 物料馆 · 左下 · 金黄 -->
+        <div title="ALUM 品莲物料馆" style="position:absolute;left:-9%;top:41%;width:48%;aspect-ratio:1/1;border-radius:50%;overflow:hidden;z-index:6;box-shadow:0 26px 60px -18px rgba(0,0,0,.38);transition:transform .5s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.035)">
+          <img src="images/showroom.jpg" loading="lazy" alt="物料馆" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#F0A80A;opacity:.84;mix-blend-mode:multiply;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:#F0A80A;opacity:.26;"></span>
+          <span aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(0,0,0,0) 42%,rgba(0,0,0,.24) 100%);"></span>
+          <span style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:15%;gap:8px;">
+            <span style="font-family:ui-monospace,monospace;font-size:clamp(8px,1.1vw,10.5px);letter-spacing:.22em;text-transform:uppercase;opacity:.85;">ALUM Material Library</span>
+            <span style="font-size:clamp(16px,2.6vw,28px);font-weight:800;line-height:1.25;">物料馆</span>
+            <span aria-hidden="true" style="width:26px;height:1.5px;background:rgba(255,255,255,.75);"></span>
+            <span style="font-size:clamp(9px,1.2vw,12.5px);opacity:.92;">ALUM · 品莲物料馆 · 金尚自持</span>
+          </span>
+        </div>
+        <!-- 中央标语 -->
+        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:34%;aspect-ratio:1/1;border-radius:50%;background:var(--paper);z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;box-shadow:0 18px 70px -14px rgba(0,0,0,.2);padding:4%;">
+          <span style="font-family:ui-monospace,monospace;font-size:clamp(8px,1vw,10.5px);letter-spacing:.24em;color:var(--ink2);text-transform:uppercase;">Jinshang Series</span>
+          <div style="font-size:clamp(14px,2vw,23px);font-weight:900;line-height:1.45;color:var(--ink);">我们要建设<span style="display:block;font-family:'Archivo Narrow',Arial,sans-serif;font-size:clamp(30px,4.8vw,58px);font-weight:700;color:var(--accent);line-height:1.1;margin:2px 0;">100</span>个金尚</div>
+          <span aria-hidden="true" style="width:26px;height:2px;background:var(--accent);"></span>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:clamp(13px,1.1vw,15px);color:var(--ink2);max-width:62ch;margin:clamp(6px,1.5vw,14px) auto 0;line-height:1.9;">从金尚·源到物料馆，每一个「金尚」都是设计、施工、运营一体化的完整样本 —— 我们要把这个样本，复制 100 次。点击任意圆环，翻看现场实拍。</p>
+      </div>
+
+  </section>
+
+  <!-- FUTURE -->
+  <section id="future" data-screen-label="Future" style="background:#fff;color:var(--ink);padding:clamp(70px,10vw,140px) clamp(20px,5vw,64px);margin-top:clamp(60px,8vw,110px);">
+    <div data-sechead="" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:46px;flex-wrap:wrap;">
+      <span style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;color:var(--ink2);text-transform:uppercase;display:flex;align-items:center;gap:10px;"><b style="color:var(--accent);font-weight:700;">06</b> What's next</span>
+      <h2 data-sh="" style="font-family:'Archivo Narrow','Arial Narrow',Arial,sans-serif;font-weight:700;text-transform:uppercase;line-height:.9;font-size:clamp(30px,5vw,62px);text-align:right;">WTL致力于<span style="display:block;font-size:.34em;letter-spacing:.1em;color:var(--ink2);font-weight:600;margin-top:10px;">交付钥匙之后，故事才刚开始</span></h2>
+    </div>
+    <div data-m="1" style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,40px);">
+      <div data-reveal="" style="border:1px solid var(--line);border-radius:16px;padding:clamp(26px,3vw,38px);transition:background .3s;" style-hover="background:#f5f6f8">
+        <div style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.12em;color:var(--accent);">N/01</div>
+        <h3 style="font-size:clamp(20px,2.4vw,26px);font-weight:800;margin-top:16px;">运营驱动设计</h3>
+        <div data-en="" style="font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:6px;">We design for the day after opening.</div>
+        <p style="font-size:14px;color:var(--ink2);margin-top:16px;line-height:1.7;">别人交付钥匙，我们交付经营。把自持楼宇的真实运营数据写进设计标准 —— 空间从立项第一天，就对准你十年后的回报。</p>
+      </div>
+      <div data-reveal="" style="border:1px solid var(--line);border-radius:16px;padding:clamp(26px,3vw,38px);transition:background .3s;" style-hover="background:#f5f6f8">
+        <div style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.12em;color:var(--accent);">N/02</div>
+        <h3 style="font-size:clamp(20px,2.4vw,26px);font-weight:800;margin-top:16px;">全国化交付网络</h3>
+        <div data-en="" style="font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:6px;">Wherever you build, we're there.</div>
+        <p style="font-size:14px;color:var(--ink2);margin-top:16px;line-height:1.7;">专职团队 + 标准化工具链，多城市、多园区同时开工。快速应答、就地落地 —— 规模不打折，品质不掉线。</p>
+      </div>
+      <div data-reveal="" style="border:1px solid var(--line);border-radius:16px;padding:clamp(26px,3vw,38px);transition:background .3s;" style-hover="background:#f5f6f8">
+        <div style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.12em;color:var(--accent);">N/03</div>
+        <h3 style="font-size:clamp(20px,2.4vw,26px);font-weight:800;margin-top:16px;">金尚加持 · 一体化平台</h3>
+        <div data-en="" style="font-size:10.5px;letter-spacing:.16em;color:var(--ink2);text-transform:uppercase;margin-top:6px;">From fit-out to running the building.</div>
+        <p style="font-size:14px;color:var(--ink2);margin-top:16px;line-height:1.7;">设计、施工、运营协同同一平台。我们更懂办公与商业楼宇真正要什么 —— 把「装修一个空间」升级成「经营一栋楼」。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" data-screen-label="Contact" style="padding:clamp(70px,9vw,120px) clamp(20px,5vw,64px) 46px;">
+    <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ink);border-radius:40px;padding:7px 16px;font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:30px;">Let's build · 携手共建</span>
+    <h2 style="font-family:'Archivo Narrow','Arial Narrow',Arial,sans-serif;font-weight:700;text-transform:uppercase;line-height:.9;font-size:clamp(40px,9vw,140px);">把您的楼<br>交给懂经营的人</h2>
+    <p style="font-size:15px;color:var(--ink2);max-width:40ch;margin-top:24px;">从一次空间，到一栋楼的长期经营 —— 一次对话，就能少走很多弯路。欢迎与 WTL Design 聊聊您的项目。</p>
+    <div data-m="1" style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:60px;border-top:1px solid var(--line);padding-top:34px;">
+      <div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.18em;color:var(--ink2);text-transform:uppercase;">公司 Company</div><div style="font-size:16px;font-weight:600;margin-top:8px;line-height:1.5;">北京朋明建筑装饰工程有限公司<br>WTL · Way to Life Design</div></div>
+      <div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.18em;color:var(--ink2);text-transform:uppercase;">业务 Service</div><div style="font-size:16px;font-weight:600;margin-top:8px;line-height:1.5;">办公 · 商业 · 酒店 · 文化空间<br>设计施工一体化 EPCO</div></div>
+      <div><div style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.18em;color:var(--ink2);text-transform:uppercase;">联系 Contact</div><div style="font-size:16px;font-weight:600;margin-top:8px;line-height:1.5;">www.wtldesign.com<br>[ 电话 / 邮箱待填 ]</div></div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:70px;padding-top:24px;border-top:1px solid var(--line);flex-wrap:wrap;gap:16px;">
+      <img src="images/logo-full.png" alt="WTL · Way to Life Design" style="height:20px;width:auto;display:block;">
+      <span style="font-family:ui-monospace,monospace;font-size:10.5px;letter-spacing:.1em;color:var(--ink2);">© 2026 WTL DESIGN · COMPANY PROFILE</span>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#102B98&quot;,&quot;options&quot;:[&quot;#102B98&quot;,&quot;#1D4ED8&quot;,&quot;#2b3a55&quot;,&quot;#B96F3C&quot;,&quot;#6b6b6b&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;paperTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;纯白&quot;,&quot;options&quot;:[&quot;纯白&quot;,&quot;米白&quot;,&quot;暖灰&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { rootRef: (el) => { this._rootEl = el; } };
+  }
+
+  hexDarken(hex, f) {
+    hex = (hex || '').replace('#', '');
+    if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+    if (hex.length !== 6) return '#8a4f29';
+    const n = parseInt(hex, 16);
+    const r = Math.round(((n >> 16) & 255) * f);
+    const g = Math.round(((n >> 8) & 255) * f);
+    const b = Math.round((n & 255) * f);
+    return '#' + [r, g, b].map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0')).join('');
+  }
+
+  applyTheme() {
+    if (!this._rootEl) return;
+    const a = (this.props.accentColor && this.props.accentColor !== '#B96F3C' && this.props.accentColor !== '#1D4ED8') ? this.props.accentColor : '#102B98';
+    this._rootEl.style.setProperty('--accent', a);
+    this._rootEl.style.setProperty('--accent-d', this.hexDarken(a, 0.72));
+    const tone = (this.props.paperTone && this.props.paperTone !== '米白') ? this.props.paperTone : '纯白';
+    const paper = tone === '纯白' ? '#FFFFFF' : (tone === '暖灰' ? '#E9E5DC' : '#F2F0EA');
+    this._rootEl.style.setProperty('--paper', paper);
+  }
+
+  countUp(el) {
+    if (el.dataset.counted) return;
+    el.dataset.counted = '1';
+    const raw = el.getAttribute('data-count') || '';
+    const num = parseInt(raw.replace(/[^0-9]/g, '')) || 0;
+    const suffix = raw.replace(/[0-9,]/g, '');
+    const dur = 1400;
+    const start = performance.now();
+    const step = () => {
+      let p = Math.min(1, (performance.now() - start) / dur);
+      p = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(num * p).toLocaleString() + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  revealAll() {
+    if (!this._rootEl) return;
+    this._rootEl.querySelectorAll('[data-reveal]').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+    this._rootEl.querySelectorAll('[data-count]').forEach(el => this.countUp(el));
+  }
+
+  showFlipTarget() {
+    const root = this._rootEl; if (!root) return;
+    const cards = [...root.querySelectorAll('[data-flipcard]')]; if (!cards.length) return;
+    cards.forEach((c, i) => {
+      c.style.transition = 'none';
+      const last = i === cards.length - 1;
+      c.style.transform = last ? 'rotateY(0deg)' : 'rotateY(-92deg)';
+      c.style.opacity = last ? '1' : '0';
+      c.style.zIndex = last ? '5' : '1';
+    });
+    const cap = root.querySelector('[data-flipcaption]');
+    if (cap) { cap.textContent = '建筑装饰工程专业承包 · 壹级'; cap.style.color = 'var(--accent)'; }
+  }
+
+  runFlip() {
+    const root = this._rootEl; if (!root || this._flipped) return;
+    const stage = root.querySelector('[data-flipstage]'); if (!stage) return;
+    const cards = [...stage.querySelectorAll('[data-flipcard]')]; const n = cards.length; if (!n) return;
+    this._flipped = true;
+    cards.forEach(c => { c.style.transition = 'none'; c.style.transform = 'rotateY(-92deg)'; c.style.opacity = '0'; c.style.zIndex = '1'; });
+    const seq = []; for (let p = 0; p < 2; p++) { for (let i = 0; i < n; i++) seq.push(i); }
+    const durByEnd = [470, 330, 230, 162, 116, 86];
+    let prev = null, t = 0;
+    seq.forEach((idx, k) => {
+      const fromEnd = seq.length - 1 - k;
+      const dur = fromEnd < durByEnd.length ? durByEnd[fromEnd] : 72;
+      this._flipTimers.push(setTimeout(() => {
+        const cur = cards[idx];
+        cur.style.transition = 'none'; cur.style.transform = 'rotateY(-92deg)'; cur.style.opacity = '0'; cur.style.zIndex = '5';
+        void cur.offsetWidth;
+        cur.style.transition = 'transform ' + dur + 'ms cubic-bezier(.2,.85,.3,1),opacity ' + Math.round(dur * 0.55) + 'ms ease';
+        cur.style.transform = 'rotateY(0deg)'; cur.style.opacity = '1';
+        if (prev && prev !== cur) {
+          const pv = prev; pv.style.zIndex = '4';
+          pv.style.transition = 'transform ' + dur + 'ms cubic-bezier(.4,0,.2,1),opacity ' + dur + 'ms ease';
+          pv.style.transform = 'rotateY(92deg)'; pv.style.opacity = '0';
+        }
+        prev = cur;
+        if (k === seq.length - 1) {
+          this._flipTimers.push(setTimeout(() => {
+            cur.style.transition = 'transform .55s cubic-bezier(.2,.8,.3,1),box-shadow .55s ease';
+            cur.style.transform = 'rotateY(0deg) scale(1.035)';
+            cur.style.boxShadow = '0 44px 90px -26px rgba(0,0,0,.5)';
+            const cap = root.querySelector('[data-flipcaption]');
+            if (cap) { cap.textContent = '建筑装饰工程专业承包 · 壹级'; cap.style.color = 'var(--accent)'; }
+          }, dur + 30));
+        }
+      }, t));
+      t += dur + Math.round(dur * 0.45);
+    });
+  }
+
+  componentDidMount() {
+    this._flipTimers = [];
+    this.applyTheme();
+    const root = this._rootEl;
+    if (!root) return;
+
+    const reduce = this.props.reduceMotion || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    if (reduce) {
+      root.querySelectorAll('[data-anim]').forEach(el => { el.style.animation = 'none'; });
+      root.querySelectorAll('[data-rise]').forEach(el => { el.style.animation = 'none'; el.style.transform = 'none'; });
+      this.revealAll();
+      this.showFlipTarget();
+    } else {
+      root.querySelectorAll('[data-reveal]').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(26px)';
+        el.style.transition = 'opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)';
+      });
+      this._io = new IntersectionObserver((es) => {
+        es.forEach(e => {
+          if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'none'; this._io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      root.querySelectorAll('[data-reveal]').forEach(el => this._io.observe(el));
+
+      this._cio = new IntersectionObserver((es) => {
+        es.forEach(e => { if (e.isIntersecting) { this.countUp(e.target); this._cio.unobserve(e.target); } });
+      }, { threshold: 0.5 });
+      root.querySelectorAll('[data-count]').forEach(el => this._cio.observe(el));
+    }
+
+    if (!reduce) {
+      const stage = root.querySelector('[data-flipstage]');
+      if (stage) {
+        this._fio = new IntersectionObserver((es) => {
+          es.forEach(e => { if (e.isIntersecting) { this.runFlip(); this._fio.disconnect(); } });
+        }, { threshold: 0.3 });
+        this._fio.observe(stage);
+      }
+    }
+
+    const prog = root.querySelector('[data-prog]');
+    const nav = root.querySelector('[data-nav]');
+    this._onScroll = () => {
+      const h = document.documentElement;
+      const sc = h.scrollTop / Math.max(1, (h.scrollHeight - h.clientHeight));
+      if (prog) prog.style.width = (sc * 100) + '%';
+      if (nav) nav.style.borderBottomColor = h.scrollTop > 40 ? 'var(--line)' : 'transparent';
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onScroll();
+  }
+
+  componentDidUpdate() {
+    this.applyTheme();
+  }
+
+  componentWillUnmount() {
+    if (this._io) this._io.disconnect();
+    if (this._cio) this._cio.disconnect();
+    if (this._fio) this._fio.disconnect();
+    if (this._flipTimers) this._flipTimers.forEach(clearTimeout);
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+  }
+}
+</script>
+</body>
+</html>
